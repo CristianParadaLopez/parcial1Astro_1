@@ -1,0 +1,41 @@
+---
+// Contador.astro
+---
+
+<div>
+  <h2>Contador: <span id="display">0</span></h2>
+  
+  <button id="incrementBtn">Incrementar</button>
+  <button id="resetBtn">Reiniciar</button>
+</div>
+
+<script>
+  let count: number = 0;
+  
+  const display = document.getElementById('display') as HTMLElement | null;
+  const btnIncrement = document.getElementById('incrementBtn') as HTMLButtonElement | null;
+  const btnReset = document.getElementById('resetBtn') as HTMLButtonElement | null;
+
+  if (display && btnIncrement && btnReset) {
+    btnIncrement.addEventListener('click', () => {
+      count++;
+      display.textContent = count.toString();
+    });
+
+    btnReset.addEventListener('click', () => {
+      count = 0;
+      display.textContent = count.toString();
+    });
+  }
+</script>
+
+<style>
+  /* Sin diseño, solo estructura básica */
+  div {
+    font-family: sans-serif;
+  }
+  button {
+    margin-right: 5px;
+    cursor: pointer;
+  }
+</style>

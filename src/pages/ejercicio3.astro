@@ -1,0 +1,35 @@
+---
+// Visibilidad.astro
+---
+
+<div>
+  <button id="toggleBtn">Mostrar/Ocultar Mensaje</button>
+  <p id="message" class="hidden">No se nada jeje.</p>
+</div>
+
+<script>
+  const btn = document.getElementById('toggleBtn') as HTMLButtonElement | null;
+  const message = document.getElementById('message') as HTMLParagraphElement | null;
+
+  if (btn && message) {
+    btn.addEventListener('click', () => {
+      message.classList.toggle('hidden');
+    });
+  }
+</script>
+
+<style>
+  .hidden {
+    display: none;
+  }
+
+  button {
+    cursor: pointer;
+    padding: 5px 10px;
+  }
+
+  p {
+    margin-top: 10px;
+    font-weight: bold;
+  }
+</style>
