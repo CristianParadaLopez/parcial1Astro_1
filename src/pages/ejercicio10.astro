@@ -1,0 +1,84 @@
+---
+// Ejercicio 10 — Detector de Cambios
+---
+
+<meta charset="UTF-8" />
+
+<div class="main-container">
+
+  <section class="exercise-card">
+    <div class="content">
+      <h2>10. Detector de Cambios</h2>
+      <input type="text" id="detectorInput" placeholder="Escribe aquí..." />
+      <p id="contadorChars">Caracteres: 0 / 10</p>
+      <p id="alertaLimite" class="hidden alerta-roja">¡Has superado el límite de 10 caracteres!</p>
+    </div>
+  </section>
+
+</div>
+
+<script>
+  const detectorInput = document.getElementById('detectorInput') as HTMLInputElement | null;
+  const contadorChars = document.getElementById('contadorChars');
+  const alertaLimite  = document.getElementById('alertaLimite');
+  if (detectorInput && contadorChars && alertaLimite) {
+    detectorInput.addEventListener('input', () => {
+      const len = detectorInput.value.length;
+      contadorChars.textContent = `Caracteres: ${len} / 10`;
+      if (len > 10) {
+        alertaLimite.classList.remove('hidden');
+      } else {
+        alertaLimite.classList.add('hidden');
+      }
+    });
+  }
+</script>
+
+<style>
+  .main-container {
+    max-width: 600px;
+    margin: 40px auto;
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    font-family: system-ui, -apple-system, sans-serif;
+    padding: 20px;
+  }
+
+  .exercise-card {
+    background: #fff;
+    padding: 25px;
+    border: 1px solid #e1e1e1;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  }
+
+  h2 {
+    margin-top: 0;
+    font-size: 1.4rem;
+    color: #222;
+  }
+
+  input {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 1rem;
+    width: 100%;
+    max-width: 300px;
+    box-sizing: border-box;
+  }
+
+  .hidden { display: none; }
+  p { font-weight: 500; color: #444; margin-top: 15px; }
+
+  .alerta-roja {
+    color: #dc3545;
+    font-weight: 700;
+    background: #fff3f4;
+    border: 1px solid #f5c6cb;
+    border-radius: 6px;
+    padding: 10px 14px;
+    margin-top: 10px;
+  }
+</style>
