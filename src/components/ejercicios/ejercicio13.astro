@@ -10,9 +10,11 @@
   const input = document.getElementById('keyInput');
   const display = document.getElementById('display');
 
-  input.addEventListener('keydown', (event) => {
-    display.textContent = `Última tecla presionada: ${event.key}`;
-  });
+  if (input && display) {
+    input.addEventListener('keydown', (event) => {
+      display.textContent = `Última tecla presionada: ${event.key}`;
+    });
+  }
 </script>
 
 <style>
