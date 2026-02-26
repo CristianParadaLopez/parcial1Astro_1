@@ -1,0 +1,37 @@
+---
+import '../styles/global.css';
+// Props para personalizar el título de cada página
+interface Props {
+  title: string;
+}
+
+const { title } = Astro.props;
+---
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <title>{title}</title>
+</head>
+<body class="bg-gray-50 min-h-screen">
+    <nav class="bg-slate-900 text-white p-4 shadow-md">
+        <div class="container mx-auto flex justify-between items-center">
+            <a href="/" class="font-bold text-xl">Mi Parcial</a>
+            <div class="space-x-4">
+                <a href="/proyecto-final" class="hover:text-blue-400">Pokémon API</a>
+                <a href="/ejercicios9-12" class="hover:text-blue-400">Ejercicios</a>
+                <a href="/proyecto-final/pokemon/favoritos" class="hover:text-blue-400">⭐ Favoritos</a>
+            </div>
+        </div>
+    </nav>
+
+    <slot />
+
+    <footer class="text-center py-8 text-gray-500 text-sm">
+        Desarrollado para el Examen Parcial - Astro + PokéAPI
+    </footer>
+</body>
+</html>

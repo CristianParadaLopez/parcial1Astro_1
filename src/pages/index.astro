@@ -1,17 +1,44 @@
 ---
+import LayoutEjercicio from '../layouts/LayoutEjercicio.astro';
 
+// Lista ficticia de tus ejercicios para cumplir el requisito de "listas"
+const ejercicios = Array.from({ length: 20 }, (_, i) => ({
+  id: i + 1,
+  titulo: `Ejercicio Básico ${i + 1}`,
+  slug: `ejercicio-${i + 1}`
+}));
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
-</html>
+<LayoutEjercicio title="Inicio - Mis Tareas">
+  <main class="max-w-4xl mx-auto p-8">
+    <div class="text-center mb-12">
+      <h1 class="text-5xl font-black text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600">
+        Mi Proyecto Astro
+      </h1>
+      <p class="mt-4 text-gray-600 text-lg">Selecciona una sección para revisar el trabajo</p>
+    </div>
+
+    <div class="grid md:grid-cols-2 gap-8">
+      <a href="/proyecto-final" class="group p-6 bg-white rounded-2xl shadow-sm border hover:border-blue-500 transition-all">
+        <h2 class="text-2xl font-bold mb-2 group-hover:text-blue-600">🚀 Proyecto Final (PokeAPI)</h2>
+        <p class="text-gray-500 italic">Buscador, detalles y favoritos de Pokémon.</p>
+      </a>
+
+      <a href="/ejercicios9-12" class="group p-6 bg-white rounded-2xl shadow-sm border hover:border-indigo-500 transition-all">
+        <h2 class="text-2xl font-bold mb-2 group-hover:text-indigo-600">📚 Ejercicios (9-12)</h2>
+        <p class="text-gray-500 italic">Resolución de la guía de ejercicios básicos.</p>
+      </a>
+    </div>
+
+    <hr class="my-12" />
+
+    <h2 class="text-2xl font-bold mb-6">Lista de los 20 Ejercicios Básicos</h2>
+    <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
+      {ejercicios.map(ex => (
+        <div class="p-3 bg-gray-100 rounded text-center text-sm font-medium hover:bg-gray-200 cursor-pointer transition-colors">
+          {ex.titulo}
+        </div>
+      ))}
+    </div>
+  </main>
+</LayoutEjercicio>
