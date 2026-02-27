@@ -1,10 +1,26 @@
 ---
 import '../../styles/global.css';
 
-// src/components/proyecto-final/PokemonCard.astro
 const { id, name, image } = Astro.props;
 ---
-<div class="pokemon-card bg-white rounded-xl shadow-md overflow-hidden hover:shadow-2xl transition-all duration-300 border border-gray-100" data-name={name}>
+
+<div 
+  class="pokemon-card bg-white rounded-xl shadow-md overflow-hidden hover:shadow-2xl transition-all duration-300 border border-gray-100 relative" 
+  data-name={name}
+>
+  <!-- Botón de favorito -->
+  <button
+    class="favorite-btn absolute top-3 right-3 z-10 w-9 h-9 flex items-center justify-center rounded-full bg-white shadow-md hover:scale-110 transition-transform duration-200"
+    data-id={id}
+    data-name={name}
+    data-image={image}
+    aria-label="Agregar a favoritos"
+  >
+    <svg class="heart-icon w-5 h-5 transition-colors duration-200" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+    </svg>
+  </button>
+
   <div class="bg-gray-100 p-4 flex justify-center">
     <img src={image} alt={name} class="w-32 h-32 object-contain" />
   </div>
@@ -19,3 +35,62 @@ const { id, name, image } = Astro.props;
     </a>
   </div>
 </div>
+
+<script>
+  function initFavoriteButtons() {
+    const buttons = document.querySelectorAll('.favorite-btn');
+    
+    buttons.forEach((btn) => {
+      const id = btn.getAttribute('data-id');
+      // Pintar estado inicial
+      updateHeartUI(btn, isFavorite(id));
+
+      btn.addEventListener('click', (e) => {
+        e.preventDefault();
+        const name = btn.getAttribute('data-name');
+        const image = btn.getAttribute('data-image');
+        toggleFavorite({ id, name, image });
+        updateHeartUI(btn, isFavorite(id));
+      });
+    });
+  }
+
+  function getFavorites(): any[] {
+    try {
+      return JSON.parse(localStorage.getItem('pokemon-favorites') || '[]');
+    } catch {
+      return [];
+    }
+  }
+
+  function isFavorite(id: string | null): boolean {
+    return getFavorites().some((p) => p.id == id);
+  }
+
+  function toggleFavorite(pokemon: { id: string | null; name: string | null; image: string | null }) {
+    const favs = getFavorites();
+    const index = favs.findIndex((p) => p.id == pokemon.id);
+    if (index === -1) {
+      favs.push(pokemon);
+    } else {
+      favs.splice(index, 1);
+    }
+    localStorage.setItem('pokemon-favorites', JSON.stringify(favs));
+  }
+
+  function updateHeartUI(btn: Element, active: boolean) {
+    const icon = btn.querySelector('.heart-icon');
+    if (!icon) return;
+    if (active) {
+      icon.setAttribute('fill', '#ef4444');
+      icon.setAttribute('stroke', '#ef4444');
+    } else {
+      icon.setAttribute('fill', 'none');
+      icon.setAttribute('stroke', '#9ca3af');
+    }
+  }
+
+  // Inicializar al cargar y también para navegación con View Transitions
+  document.addEventListener('DOMContentLoaded', initFavoriteButtons);
+  document.addEventListener('astro:page-load', initFavoriteButtons);
+</script>

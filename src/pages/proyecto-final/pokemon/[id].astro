@@ -1,0 +1,250 @@
+
+Copiar
+
+---
+export const prerender = false;
+
+import LayoutProyecto from '../../../layouts/LayoutProyecto.astro';
+import { getPokemonDetail } from '../../../service/pokeApi.js';
+
+const { id } = Astro.params;
+const pokemon = await getPokemonDetail(id);
+
+// Descripción Pokédex en español
+let description = '';
+try {
+  const speciesRes = await fetch(`https://pokeapi.co/api/v2/pokemon-species/${pokemon.id}`);
+  const species = await speciesRes.json();
+  const entry =
+    species.flavor_text_entries.find((e: any) => e.language.name === 'es') ||
+    species.flavor_text_entries.find((e: any) => e.language.name === 'en');
+  description = entry ? entry.flavor_text.replace(/\f|\n/g, ' ') : '';
+} catch {}
+
+// Audio cry
+const cryUrl = pokemon.cries?.latest || '';
+
+// Traducción de tipos
+const typeTranslations: Record<string, string> = {
+  normal: 'Normal', fire: 'Fuego', water: 'Agua', electric: 'Eléctrico',
+  grass: 'Planta', ice: 'Hielo', fighting: 'Lucha', poison: 'Veneno',
+  ground: 'Tierra', flying: 'Volador', psychic: 'Psíquico', bug: 'Bicho',
+  rock: 'Roca', ghost: 'Fantasma', dragon: 'Dragón', dark: 'Siniestro',
+  steel: 'Acero', fairy: 'Hada',
+};
+
+// Traducción de estadísticas
+const statTranslations: Record<string, string> = {
+  hp: 'PS',
+  attack: 'Ataque',
+  defense: 'Defensa',
+  'special-attack': 'Ataque Esp.',
+  'special-defense': 'Defensa Esp.',
+  speed: 'Velocidad',
+};
+
+// Colores por tipo
+const typeColors: Record<string, { bg: string; text: string; badge: string }> = {
+  fire:     { bg: 'from-orange-50 to-red-100',     text: 'text-orange-600', badge: 'bg-orange-100 text-orange-700' },
+  water:    { bg: 'from-blue-50 to-cyan-100',      text: 'text-blue-600',   badge: 'bg-blue-100 text-blue-700' },
+  grass:    { bg: 'from-green-50 to-emerald-100',  text: 'text-green-600',  badge: 'bg-green-100 text-green-700' },
+  electric: { bg: 'from-yellow-50 to-amber-100',   text: 'text-yellow-600', badge: 'bg-yellow-100 text-yellow-700' },
+  psychic:  { bg: 'from-pink-50 to-rose-100',      text: 'text-pink-600',   badge: 'bg-pink-100 text-pink-600' },
+  ice:      { bg: 'from-cyan-50 to-sky-100',       text: 'text-cyan-600',   badge: 'bg-cyan-100 text-cyan-700' },
+  dragon:   { bg: 'from-indigo-50 to-violet-100',  text: 'text-indigo-600', badge: 'bg-indigo-100 text-indigo-700' },
+  dark:     { bg: 'from-gray-700 to-gray-900',     text: 'text-gray-100',   badge: 'bg-gray-800 text-gray-100' },
+  fairy:    { bg: 'from-pink-50 to-fuchsia-100',   text: 'text-pink-500',   badge: 'bg-fuchsia-100 text-fuchsia-600' },
+  fighting: { bg: 'from-red-50 to-orange-100',     text: 'text-red-600',    badge: 'bg-red-100 text-red-700' },
+  poison:   { bg: 'from-purple-50 to-violet-100',  text: 'text-purple-600', badge: 'bg-purple-100 text-purple-700' },
+  ground:   { bg: 'from-yellow-100 to-amber-200',  text: 'text-yellow-700', badge: 'bg-yellow-200 text-yellow-800' },
+  rock:     { bg: 'from-stone-100 to-stone-200',   text: 'text-stone-600',  badge: 'bg-stone-200 text-stone-700' },
+  ghost:    { bg: 'from-violet-100 to-purple-200', text: 'text-violet-600', badge: 'bg-violet-100 text-violet-700' },
+  bug:      { bg: 'from-lime-50 to-green-100',     text: 'text-lime-600',   badge: 'bg-lime-100 text-lime-700' },
+  steel:    { bg: 'from-slate-100 to-gray-200',    text: 'text-slate-600',  badge: 'bg-slate-200 text-slate-700' },
+  flying:   { bg: 'from-sky-50 to-blue-100',       text: 'text-sky-600',    badge: 'bg-sky-100 text-sky-700' },
+  normal:   { bg: 'from-gray-50 to-gray-100',      text: 'text-gray-500',   badge: 'bg-gray-100 text-gray-600' },
+};
+
+const primaryType = pokemon.types[0]?.type.name || 'normal';
+const theme = typeColors[primaryType] || typeColors.normal;
+
+const image = pokemon.sprites.other['official-artwork'].front_default;
+const types = pokemon.types.map((t: any) => t.type.name);
+const stats = pokemon.stats.map((s: any) => ({ name: s.stat.name, value: s.base_stat }));
+
+// Habilidades traducidas desde la API
+const abilities: string[] = await Promise.all(
+  pokemon.abilities.map(async (a: any) => {
+    try {
+      const res = await fetch(`https://pokeapi.co/api/v2/ability/${a.ability.name}`);
+      const data = await res.json();
+      const esName = data.names.find((n: any) => n.language.name === 'es');
+      return esName ? esName.name : a.ability.name;
+    } catch {
+      return a.ability.name;
+    }
+  })
+);
+
+const statColors: Record<string, string> = {
+  hp:               'bg-red-400',
+  attack:           'bg-orange-400',
+  defense:          'bg-blue-400',
+  'special-attack': 'bg-purple-400',
+  'special-defense':'bg-green-400',
+  speed:            'bg-yellow-400',
+};
+---
+
+<LayoutProyecto title={`${pokemon.name} - Detalle`}>
+  <main class="container mx-auto px-4 py-10 max-w-3xl">
+
+    <!-- Volver (ruta corregida) -->
+    <a href="/proyecto-final" class="inline-flex items-center gap-2 text-blue-600 hover:text-blue-800 mb-8 font-medium transition-colors group">
+      <svg class="w-4 h-4 group-hover:-translate-x-1 transition-transform" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+        <path d="M19 12H5M12 5l-7 7 7 7"/>
+      </svg>
+      Volver al listado
+    </a>
+
+    <div class="bg-white rounded-2xl shadow-xl overflow-hidden border border-gray-100">
+
+      <!-- Header -->
+      <div class={`bg-gradient-to-br ${theme.bg} p-8 flex flex-col sm:flex-row items-center gap-8 relative`}>
+        <span class="absolute top-4 right-6 text-8xl font-black opacity-10 select-none pointer-events-none">
+          #{pokemon.id.toString().padStart(3, '0')}
+        </span>
+
+        <div class="relative z-10">
+          <img src={image} alt={pokemon.name} class="w-48 h-48 object-contain drop-shadow-2xl" />
+          <button
+            id="detail-favorite-btn"
+            data-id={pokemon.id}
+            data-name={pokemon.name}
+            data-image={image}
+            class="absolute -top-1 -right-1 w-10 h-10 flex items-center justify-center rounded-full bg-white shadow-lg hover:scale-110 transition-transform"
+            aria-label="Agregar a favoritos"
+          >
+            <svg id="detail-heart" class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="#9ca3af" stroke-width="2">
+              <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+            </svg>
+          </button>
+        </div>
+
+        <div class="z-10 text-center sm:text-left">
+          <span class={`text-sm font-bold ${theme.text} tracking-widest uppercase`}>
+            #{pokemon.id.toString().padStart(3, '0')}
+          </span>
+          <h1 class="text-5xl font-extrabold text-slate-800 capitalize mt-1 mb-3">{pokemon.name}</h1>
+
+          <!-- Tipos en español -->
+          <div class="flex flex-wrap gap-2 justify-center sm:justify-start mb-4">
+            {types.map((type: string) => (
+              <span class={`px-4 py-1 rounded-full text-sm font-bold ${typeColors[type]?.badge || 'bg-gray-100 text-gray-600'}`}>
+                {typeTranslations[type] || type}
+              </span>
+            ))}
+          </div>
+
+          {description && (
+            <p class="text-gray-600 text-sm max-w-sm italic leading-relaxed">"{description}"</p>
+          )}
+        </div>
+      </div>
+
+      <div class="p-8 space-y-8">
+
+        <!-- Audio -->
+        {cryUrl && (
+          <div class="bg-gray-50 rounded-xl p-4 border border-gray-100">
+            <p class="text-xs font-semibold text-gray-400 mb-2 uppercase tracking-wide">🔊 Grito de {pokemon.name}</p>
+            <audio controls class="w-full" preload="none">
+              <source src={cryUrl} type="audio/ogg" />
+              Tu navegador no soporta audio.
+            </audio>
+          </div>
+        )}
+
+        <!-- Datos básicos -->
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
+          <div class="bg-gray-50 rounded-xl p-4 text-center border border-gray-100">
+            <p class="text-xs text-gray-400 uppercase tracking-wide mb-1">Altura</p>
+            <p class="text-sm font-bold text-gray-800">{(pokemon.height / 10).toFixed(1)} m</p>
+          </div>
+          <div class="bg-gray-50 rounded-xl p-4 text-center border border-gray-100">
+            <p class="text-xs text-gray-400 uppercase tracking-wide mb-1">Peso</p>
+            <p class="text-sm font-bold text-gray-800">{(pokemon.weight / 10).toFixed(1)} kg</p>
+          </div>
+          <div class="bg-gray-50 rounded-xl p-4 text-center border border-gray-100">
+            <p class="text-xs text-gray-400 uppercase tracking-wide mb-1">Exp. Base</p>
+            <p class="text-sm font-bold text-gray-800">{pokemon.base_experience} XP</p>
+          </div>
+          <!-- Habilidades en español -->
+          <div class="bg-gray-50 rounded-xl p-4 text-center border border-gray-100">
+            <p class="text-xs text-gray-400 uppercase tracking-wide mb-1">Habilidades</p>
+            <div class="flex flex-wrap gap-1 justify-center">
+              {abilities.map((a: string) => (
+                <span class="text-xs bg-indigo-50 text-indigo-700 px-2 py-0.5 rounded-full font-medium">{a}</span>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        <!-- Estadísticas en español -->
+        <div>
+          <h2 class="text-lg font-bold text-slate-700 mb-4">Estadísticas Base</h2>
+          <div class="space-y-3">
+            {stats.map((stat: { name: string; value: number }) => (
+              <div class="flex items-center gap-4">
+                <span class="text-xs font-semibold text-gray-400 uppercase tracking-wide w-28 shrink-0">
+                  {statTranslations[stat.name] || stat.name}
+                </span>
+                <span class="text-sm font-bold text-gray-700 w-8 text-right shrink-0">{stat.value}</span>
+                <div class="flex-1 bg-gray-100 rounded-full h-2.5">
+                  <div
+                    class={`h-2.5 rounded-full ${statColors[stat.name] || 'bg-blue-400'}`}
+                    style={`width: ${Math.min((stat.value / 255) * 100, 100)}%`}
+                  ></div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </main>
+</LayoutProyecto>
+
+<script>
+  function initDetailFavorite() {
+    const btn = document.getElementById('detail-favorite-btn');
+    if (!btn) return;
+    const id = btn.getAttribute('data-id');
+    updateHeart(isFav(id));
+    btn.addEventListener('click', () => {
+      toggle({ id, name: btn.getAttribute('data-name'), image: btn.getAttribute('data-image') });
+      updateHeart(isFav(id));
+    });
+  }
+
+  function getFavs(): any[] {
+    try { return JSON.parse(localStorage.getItem('pokemon-favorites') || '[]'); } catch { return []; }
+  }
+  function isFav(id: string | null) { return getFavs().some(p => p.id == id); }
+  function toggle(pokemon: any) {
+    const favs = getFavs();
+    const i = favs.findIndex(p => p.id == pokemon.id);
+    if (i === -1) favs.push(pokemon); else favs.splice(i, 1);
+    localStorage.setItem('pokemon-favorites', JSON.stringify(favs));
+  }
+  function updateHeart(active: boolean) {
+    const h = document.getElementById('detail-heart');
+    if (!h) return;
+    h.setAttribute('fill', active ? '#ef4444' : 'none');
+    h.setAttribute('stroke', active ? '#ef4444' : '#9ca3af');
+  }
+
+  document.addEventListener('DOMContentLoaded', initDetailFavorite);
+  document.addEventListener('astro:page-load', initDetailFavorite);
+</script>
