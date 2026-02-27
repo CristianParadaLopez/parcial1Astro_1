@@ -1,0 +1,86 @@
+---
+// Ejercicio 9 — Nombre Completo Automatico
+---
+
+<meta charset="UTF-8" />
+
+<div class="main-container">
+
+  <section class="exercise-card">
+    <div class="content">
+      <h2>9. Nombre Completo Automático</h2>
+      <div class="input-row">
+        <input type="text" id="inputNombre"   placeholder="Nombre..."   />
+        <input type="text" id="inputApellido" placeholder="Apellido..." />
+      </div>
+      <p id="nombreCompleto">Tu nombre completo aparecerá aquí</p>
+    </div>
+  </section>
+
+</div>
+
+<script>
+  const inputNombre    = document.getElementById('inputNombre')    as HTMLInputElement | null;
+  const inputApellido  = document.getElementById('inputApellido')  as HTMLInputElement | null;
+  const nombreCompleto = document.getElementById('nombreCompleto');
+  if (inputNombre && inputApellido && nombreCompleto) {
+    function actualizarNombre() {
+      const nombre   = inputNombre!.value.trim();
+      const apellido = inputApellido!.value.trim();
+      const completo = [nombre, apellido].filter(Boolean).join(' ');
+      nombreCompleto!.textContent = completo || 'Tu nombre completo aparecerá aquí';
+    }
+    inputNombre.addEventListener('input', actualizarNombre);
+    inputApellido.addEventListener('input', actualizarNombre);
+  }
+</script>
+
+<style>
+  .main-container {
+    max-width: 600px;
+    margin: 40px auto;
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    font-family: system-ui, -apple-system, sans-serif;
+    padding: 20px;
+  }
+
+  .exercise-card {
+    background: #fff;
+    padding: 25px;
+    border: 1px solid #e1e1e1;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  }
+
+  h2 {
+    margin-top: 0;
+    font-size: 1.4rem;
+    color: #222;
+  }
+
+  input {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 1rem;
+    width: 100%;
+    max-width: 300px;
+    box-sizing: border-box;
+  }
+
+  .hidden { display: none; }
+  p { font-weight: 500; color: #444; margin-top: 15px; }
+
+  .input-row {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+  .input-row input {
+    flex: 1;
+    min-width: 120px;
+    max-width: 100%;
+  }
+</style>

@@ -1,0 +1,35 @@
+---
+---
+
+<div class="container">
+  <a href="https://google.com" id="preventLink">Haz clic aquí (pero no enviará a ningún lado)</a>
+  <p id="message"></p>
+</div>
+
+<script>
+  const link = document.getElementById('preventLink');
+  const message = document.getElementById('message');
+
+  link?.addEventListener('click', (event) => {
+    event.preventDefault();
+    if (message) {
+      message.textContent = "Comportamiento predeterminado prevenido";
+    }
+  });
+</script>
+
+<style>
+  .container {
+    font-family: sans-serif;
+    padding: 20px;
+  }
+  a {
+    color: blue;
+    text-decoration: underline;
+    cursor: pointer;
+  }
+  p {
+    margin-top: 15px;
+    color: red;
+  }
+</style>

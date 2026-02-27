@@ -1,0 +1,65 @@
+---
+// Ejercicio 12 — Cambiador de Texto
+---
+
+<meta charset="UTF-8" />
+
+<div class="main-container">
+
+  <section class="exercise-card">
+    <div class="content">
+      <h2>12. Cambiador de Texto</h2>
+      <button id="toggleTextBtn" class="btn-primary">Haz clic aquí</button>
+    </div>
+  </section>
+
+</div>
+
+<script>
+  const toggleTextBtn = document.getElementById('toggleTextBtn');
+  let clicRealizado   = false;
+  if (toggleTextBtn) {
+    toggleTextBtn.addEventListener('click', () => {
+      clicRealizado = !clicRealizado;
+      toggleTextBtn.textContent = clicRealizado ? '¡Has hecho clic!' : 'Haz clic aquí';
+    });
+  }
+</script>
+
+<style>
+  .main-container {
+    max-width: 600px;
+    margin: 40px auto;
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    font-family: system-ui, -apple-system, sans-serif;
+    padding: 20px;
+  }
+
+  .exercise-card {
+    background: #fff;
+    padding: 25px;
+    border: 1px solid #e1e1e1;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  }
+
+  h2 {
+    margin-top: 0;
+    font-size: 1.4rem;
+    color: #222;
+  }
+
+  button {
+    padding: 10px 18px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 600;
+    border: none;
+    transition: background 0.2s;
+  }
+
+  .btn-primary { background: #007bff; color: white; }
+  .btn-primary:hover { background: #0056b3; }
+</style>

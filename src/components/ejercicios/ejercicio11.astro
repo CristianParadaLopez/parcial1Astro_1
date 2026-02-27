@@ -1,0 +1,102 @@
+---
+// Ejercicio 11 — Buscador en Tiempo Real
+---
+
+<meta charset="UTF-8" />
+
+<div class="main-container">
+
+  <section class="exercise-card">
+    <div class="content">
+      <h2>11. Buscador en Tiempo Real</h2>
+      <input type="text" id="buscadorInput" placeholder="Buscar fruta..." />
+      <ul id="listaFrutas">
+        <li>Manzana</li>
+        <li>Banana</li>
+        <li>Naranja</li>
+        <li>Uva</li>
+        <li>Sandía</li>
+        <li>Melón</li>
+        <li>Fresa</li>
+        <li>Kiwi</li>
+      </ul>
+      <p id="sinResultados" class="hidden">Sin resultados</p>
+    </div>
+  </section>
+
+</div>
+
+<script>
+  const buscadorInput = document.getElementById('buscadorInput') as HTMLInputElement | null;
+  const listaFrutas   = document.getElementById('listaFrutas');
+  const sinResultados = document.getElementById('sinResultados');
+  if (buscadorInput && listaFrutas && sinResultados) {
+    buscadorInput.addEventListener('input', () => {
+      const query  = buscadorInput.value.toLowerCase().trim();
+      const items  = listaFrutas.querySelectorAll('li');
+      let visibles = 0;
+      items.forEach(item => {
+        const coincide = item.textContent!.toLowerCase().includes(query);
+        item.style.display = coincide ? '' : 'none';
+        if (coincide) visibles++;
+      });
+      sinResultados.classList.toggle('hidden', visibles > 0);
+    });
+  }
+</script>
+
+<style>
+  .main-container {
+    max-width: 600px;
+    margin: 40px auto;
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    font-family: system-ui, -apple-system, sans-serif;
+    padding: 20px;
+  }
+
+  .exercise-card {
+    background: #fff;
+    padding: 25px;
+    border: 1px solid #e1e1e1;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  }
+
+  h2 {
+    margin-top: 0;
+    font-size: 1.4rem;
+    color: #222;
+  }
+
+  input {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 1rem;
+    width: 100%;
+    max-width: 300px;
+    box-sizing: border-box;
+  }
+
+  .hidden { display: none; }
+  p { font-weight: 500; color: #444; margin-top: 15px; }
+
+  #listaFrutas {
+    list-style: none;
+    padding: 0;
+    margin-top: 12px;
+  }
+  #listaFrutas li {
+    padding: 8px 12px;
+    border-radius: 6px;
+    margin-bottom: 4px;
+    background: #f8f9fa;
+    color: #333;
+    font-weight: 500;
+    transition: background 0.15s;
+  }
+  #listaFrutas li:hover { background: #e9ecef; }
+  #sinResultados { color: #888; font-style: italic; }
+</style>

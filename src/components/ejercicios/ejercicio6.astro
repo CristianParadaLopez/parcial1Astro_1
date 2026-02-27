@@ -1,0 +1,105 @@
+---
+//Calculadora.astro
+---
+<style>
+body{
+    font-family:Arial;
+    background:linear-gradient(135deg,#4facfe,#00f2fe);
+    height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+}
+
+.card{
+    background:white;
+    padding:30px;
+    border-radius:18px;
+    width:300px;
+    text-align:center;
+    box-shadow:0 10px 25px rgba(0,0,0,.25);
+}
+
+input{
+    width:90%;
+    padding:10px;
+    margin:10px 0;
+    border-radius:10px;
+    border:1px solid #ccc;
+    text-align:center;
+    font-size:16px;
+}
+
+.botones button{
+    width:60px;
+    height:45px;
+    margin:5px;
+    font-size:18px;
+    border:none;
+    border-radius:10px;
+    cursor:pointer;
+    background:#667eea;
+    color:white;
+    font-weight:bold;
+}
+
+.botones button:hover{
+    background:#5a67d8;
+}
+
+#resultado{
+    margin-top:15px;
+    font-size:20px;
+    font-weight:bold;
+}
+</style>
+</head>
+<body>
+
+<div class="card">
+<h2>Calculadora</h2>
+
+<input id="n1" type="number" placeholder="Primer número">
+<input id="n2" type="number" placeholder="Segundo número">
+
+<div class="botones">
+<button data-op="+">+</button>
+<button data-op="-">−</button>
+<button data-op="*">×</button>
+<button data-op="/">÷</button>
+</div>
+
+<div id="resultado">Resultado: —</div>
+</div>
+
+<script>
+    // @ts-nocheck
+const botones = document.querySelectorAll(".botones button");
+
+botones.forEach(btn=>{
+    btn.addEventListener("click", ()=>{
+
+        let a = parseFloat(document.getElementById("n1").value);
+        let b = parseFloat(document.getElementById("n2").value);
+        let op = btn.dataset.op;
+        let r;
+
+        if(isNaN(a) || isNaN(b)){
+            r="Ingresa ambos números";
+        }else{
+            if(op==="+") r=a+b;
+            if(op==="-" ) r=a-b;
+            if(op==="*") r=a*b;
+            if(op==="/"){
+                if(b===0) r="No se puede dividir entre 0";
+                else r=a/b;
+            }
+        }
+
+        document.getElementById("resultado").textContent="Resultado: "+r;
+    });
+});
+</script>
+
+</body>
+</html>

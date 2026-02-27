@@ -1,0 +1,51 @@
+---
+// Saludo.astro
+---
+
+<div class="card">
+  <h2>Saludo Personalizado</h2>
+  
+  <input 
+    type="text" 
+    id="nameInput" 
+    placeholder="Escribe tu nombre..." 
+  />
+
+  <p id="welcomeMessage">Hola, invitado</p>
+</div>
+
+<script>
+  const input = document.getElementById('nameInput') as HTMLInputElement | null;
+  const message = document.getElementById('welcomeMessage');
+
+  if (input && message) {
+    input.addEventListener('input', (e) => {
+      const target = e.target as HTMLInputElement;
+      const name = target.value.trim();
+      message.textContent = name ? `Hola, ${name}` : 'Hola, invitado';
+    });
+  }
+</script>
+
+<style>
+  .card {
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    max-width: 300px;
+    font-family: sans-serif;
+  }
+
+  input {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 10px;
+    box-sizing: border-box;
+  }
+
+  p {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #333;
+  }
+</style>

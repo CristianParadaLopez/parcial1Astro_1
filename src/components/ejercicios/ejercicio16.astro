@@ -1,0 +1,30 @@
+---
+---
+
+<div class="container">
+  <p id="interactiveText">Pasa el mouse sobre este texto para cambiar su color.</p>
+</div>
+
+<script>
+  const text = document.getElementById('interactiveText');
+
+  text?.addEventListener('mouseenter', () => {
+    text.style.color = 'red';
+  });
+
+  text?.addEventListener('mouseleave', () => {
+    text.style.color = 'black';
+  });
+</script>
+
+<style>
+  .container {
+    font-family: sans-serif;
+    padding: 20px;
+  }
+  p {
+    font-size: 1.2rem;
+    cursor: default;
+    transition: color 0.3s ease;
+  }
+</style>

@@ -1,0 +1,33 @@
+---
+---
+
+<div class="container">
+  <input type="text" id="keyInput" placeholder="Escribe algo aquí..." />
+  <p id="display">Última tecla presionada: </p>
+</div>
+
+<script>
+  const input = document.getElementById('keyInput');
+  const display = document.getElementById('display');
+
+  if (input && display) {
+    input.addEventListener('keydown', (event) => {
+      display.textContent = `Última tecla presionada: ${event.key}`;
+    });
+  }
+</script>
+
+<style>
+  .container {
+    font-family: sans-serif;
+    padding: 20px;
+  }
+  input {
+    padding: 8px;
+    font-size: 1rem;
+  }
+  p {
+    margin-top: 10px;
+    font-weight: bold;
+  }
+</style>
