@@ -1,0 +1,104 @@
+---
+import LayoutProyecto from '../../../layouts/LayoutProyecto.astro';
+---
+
+<LayoutProyecto title="Mis Favoritos - Pokédex">
+  <main class="container mx-auto px-4 py-10">
+    
+    <header class="text-center mb-10">
+      <h1 class="text-4xl font-extrabold text-slate-800 mb-2">⭐ Mis Favoritos</h1>
+      <p class="text-gray-500">Los Pokémon que has guardado</p>
+    </header>
+
+    <!-- Estado vacío -->
+    <div id="empty-state" class="hidden flex-col items-center justify-center py-20 text-center">
+      <svg class="w-24 h-24 text-gray-200 mb-6" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+      </svg>
+      <h2 class="text-2xl font-bold text-gray-300 mb-2">Aún no tienes favoritos</h2>
+      <p class="text-gray-400 mb-6">Explora el Pokédex y agrega tus preferidos con el corazón ❤️</p>
+      <a href="/proyecto-final/pokemon" class="bg-blue-600 text-white px-6 py-2 rounded-lg font-semibold hover:bg-blue-700 transition-colors">
+        Explorar Pokémon
+      </a>
+    </div>
+
+    <!-- Grid de favoritos -->
+    <div id="favorites-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6"></div>
+
+  </main>
+</LayoutProyecto>
+
+<script>
+  function renderFavorites() {
+    const grid = document.getElementById('favorites-grid');
+    const emptyState = document.getElementById('empty-state');
+    if (!grid || !emptyState) return;
+
+    const favs = getFavorites();
+
+    if (favs.length === 0) {
+      emptyState.classList.remove('hidden');
+      emptyState.classList.add('flex');
+      grid.innerHTML = '';
+      return;
+    }
+
+    emptyState.classList.add('hidden');
+    emptyState.classList.remove('flex');
+
+    grid.innerHTML = favs.map((pokemon) => `
+      <div class="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-2xl transition-all duration-300 border border-gray-100 relative" data-id="${pokemon.id}">
+        
+        <!-- Botón quitar favorito -->
+        <button
+          class="remove-fav absolute top-3 right-3 z-10 w-9 h-9 flex items-center justify-center rounded-full bg-white shadow-md hover:scale-110 transition-transform"
+          data-id="${pokemon.id}"
+          aria-label="Quitar de favoritos"
+        >
+          <svg class="w-5 h-5" viewBox="0 0 24 24" fill="#ef4444" stroke="#ef4444" stroke-width="2">
+            <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+          </svg>
+        </button>
+
+        <div class="bg-gray-100 p-4 flex justify-center">
+          <img src="${pokemon.image}" alt="${pokemon.name}" class="w-32 h-32 object-contain" />
+        </div>
+        <div class="p-4">
+          <span class="text-xs font-bold text-blue-500 uppercase tracking-wide">#${String(pokemon.id).padStart(3, '0')}</span>
+          <h2 class="text-xl font-bold text-gray-800 capitalize mb-4">${pokemon.name}</h2>
+          <a 
+            href="/proyecto-final/pokemon/${pokemon.id}" 
+            class="block text-center bg-blue-600 text-white text-sm font-semibold py-2 rounded-lg hover:bg-blue-700 transition-colors"
+          >
+            Ver Detalles
+          </a>
+        </div>
+      </div>
+    `).join('');
+
+    // Botones para quitar favorito
+    grid.querySelectorAll('.remove-fav').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const id = btn.getAttribute('data-id');
+        removeFavorite(id);
+        renderFavorites();
+      });
+    });
+  }
+
+  function getFavorites(): any[] {
+    try {
+      return JSON.parse(localStorage.getItem('pokemon-favorites') || '[]');
+    } catch {
+      return [];
+    }
+  }
+
+  function removeFavorite(id: string | null) {
+    const favs = getFavorites().filter((p) => p.id != id);
+    localStorage.setItem('pokemon-favorites', JSON.stringify(favs));
+  }
+
+  document.addEventListener('DOMContentLoaded', renderFavorites);
+  document.addEventListener('astro:page-load', renderFavorites);
+</script>
