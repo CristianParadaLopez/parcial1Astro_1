@@ -1,20 +1,19 @@
 ---
+//Tecla presionada
 ---
-
+<title>Ejercicio 13</title>
 <div class="container">
-  <input type="text" id="keyInput" placeholder="Escribe algo aquí..." />
-  <p id="display">Última tecla presionada: </p>
+  <input type="text" id="keyInput" placeholder="Escribe algo" />
+  <p id="mensaje">Ultima tecla presionada: </p>
 </div>
 
 <script>
   const input = document.getElementById('keyInput');
-  const display = document.getElementById('display');
+  const mensaje = document.getElementById('mensaje');
 
-  if (input && display) {
-    input.addEventListener('keydown', (event) => {
-      display.textContent = `Última tecla presionada: ${event.key}`;
-    });
-  }
+  input?.addEventListener('keydown', (event) => {
+   mensaje.textContent = 'Ultima tecla presionada: ' + event.key;
+  });
 </script>
 
 <style>
@@ -31,3 +30,4 @@
     font-weight: bold;
   }
 </style>
+
