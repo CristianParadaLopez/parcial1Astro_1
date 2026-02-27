@@ -1,0 +1,205 @@
+---
+// Ejercicios del 9 al 12
+---
+
+<div class="main-container">
+
+  <section class="exercise-card">
+    <div class="content">
+      <h2>9. Nombre Completo Automático</h2>
+      <div class="input-row">
+        <input type="text" id="inputNombre"   placeholder="Nombre..."   />
+        <input type="text" id="inputApellido" placeholder="Apellido..." />
+      </div>
+      <p id="nombreCompleto">Tu nombre completo aparecerá aquí</p>
+    </div>
+  </section>
+
+  <section class="exercise-card">
+    <div class="content">
+      <h2>10. Detector de Cambios</h2>
+      <input type="text" id="detectorInput" placeholder="Escribe aquí..." />
+      <p id="contadorChars">Caracteres: 0 / 10</p>
+      <p id="alertaLimite" class="hidden alerta-roja">¡Has superado el límite de 10 caracteres!</p>
+    </div>
+  </section>
+
+  <section class="exercise-card">
+    <div class="content">
+      <h2>11. Buscador en Tiempo Real</h2>
+      <input type="text" id="buscadorInput" placeholder="Buscar fruta..." />
+      <ul id="listaFrutas">
+        <li>Manzana</li>
+        <li>Banana</li>
+        <li>Naranja</li>
+        <li>Uva</li>
+        <li>Sandía</li>
+        <li>Melón</li>
+        <li>Fresa</li>
+        <li>Kiwi</li>
+      </ul>
+      <p id="sinResultados" class="hidden">Sin resultados</p>
+    </div>
+  </section>
+
+  <section class="exercise-card">
+    <div class="content">
+      <h2>12. Cambiador de Texto</h2>
+      <button id="toggleTextBtn" class="btn-primary">Haz clic aquí</button>
+    </div>
+  </section>
+
+</div>
+
+<script>
+  // Script Ejercicio 9 — Nombre Completo Automático
+  const inputNombre    = document.getElementById('inputNombre')    as HTMLInputElement | null;
+  const inputApellido  = document.getElementById('inputApellido')  as HTMLInputElement | null;
+  const nombreCompleto = document.getElementById('nombreCompleto');
+  if (inputNombre && inputApellido && nombreCompleto) {
+    function actualizarNombre() {
+      const nombre   = inputNombre!.value.trim();
+      const apellido = inputApellido!.value.trim();
+      const completo = [nombre, apellido].filter(Boolean).join(' ');
+      nombreCompleto!.textContent = completo || 'Tu nombre completo aparecerá aquí';
+    }
+    inputNombre.addEventListener('input', actualizarNombre);
+    inputApellido.addEventListener('input', actualizarNombre);
+  }
+
+  // Script Ejercicio 10 — Detector de Cambios
+  const detectorInput = document.getElementById('detectorInput') as HTMLInputElement | null;
+  const contadorChars = document.getElementById('contadorChars');
+  const alertaLimite  = document.getElementById('alertaLimite');
+  if (detectorInput && contadorChars && alertaLimite) {
+    detectorInput.addEventListener('input', () => {
+      const len = detectorInput.value.length;
+      contadorChars.textContent = `Caracteres: ${len} / 10`;
+      if (len > 10) {
+        alertaLimite.classList.remove('hidden');
+      } else {
+        alertaLimite.classList.add('hidden');
+      }
+    });
+  }
+
+  // Script Ejercicio 11 — Buscador en Tiempo Real
+  const buscadorInput = document.getElementById('buscadorInput') as HTMLInputElement | null;
+  const listaFrutas   = document.getElementById('listaFrutas');
+  const sinResultados = document.getElementById('sinResultados');
+  if (buscadorInput && listaFrutas && sinResultados) {
+    buscadorInput.addEventListener('input', () => {
+      const query  = buscadorInput.value.toLowerCase().trim();
+      const items  = listaFrutas.querySelectorAll('li');
+      let visibles = 0;
+      items.forEach(item => {
+        const coincide = item.textContent!.toLowerCase().includes(query);
+        item.style.display = coincide ? '' : 'none';
+        if (coincide) visibles++;
+      });
+      sinResultados.classList.toggle('hidden', visibles > 0);
+    });
+  }
+
+  // Script Ejercicio 12 — Cambiador de Texto
+  const toggleTextBtn = document.getElementById('toggleTextBtn');
+  let clicRealizado   = false;
+  if (toggleTextBtn) {
+    toggleTextBtn.addEventListener('click', () => {
+      clicRealizado = !clicRealizado;
+      toggleTextBtn.textContent = clicRealizado ? '¡Has hecho clic!' : 'Haz clic aquí';
+    });
+  }
+</script>
+
+<style>
+  .main-container {
+    max-width: 600px;
+    margin: 40px auto;
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    font-family: system-ui, -apple-system, sans-serif;
+    padding: 20px;
+  }
+
+  .exercise-card {
+    background: #fff;
+    padding: 25px;
+    border: 1px solid #e1e1e1;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  }
+
+  h2 {
+    margin-top: 0;
+    font-size: 1.4rem;
+    color: #222;
+  }
+
+  input {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 1rem;
+    width: 100%;
+    max-width: 300px;
+    box-sizing: border-box;
+  }
+
+  button {
+    padding: 10px 18px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 600;
+    border: none;
+    transition: background 0.2s;
+  }
+
+  .btn-primary { background: #007bff; color: white; }
+  .btn-primary:hover { background: #0056b3; }
+
+  .hidden { display: none; }
+  p { font-weight: 500; color: #444; margin-top: 15px; }
+
+  /* Ejercicio 9 */
+  .input-row {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+  .input-row input {
+    flex: 1;
+    min-width: 120px;
+    max-width: 100%;
+  }
+
+  /* Ejercicio 10 */
+  .alerta-roja {
+    color: #dc3545;
+    font-weight: 700;
+    background: #fff3f4;
+    border: 1px solid #f5c6cb;
+    border-radius: 6px;
+    padding: 10px 14px;
+    margin-top: 10px;
+  }
+
+  /* Ejercicio 11 */
+  #listaFrutas {
+    list-style: none;
+    padding: 0;
+    margin-top: 12px;
+  }
+  #listaFrutas li {
+    padding: 8px 12px;
+    border-radius: 6px;
+    margin-bottom: 4px;
+    background: #f8f9fa;
+    color: #333;
+    font-weight: 500;
+    transition: background 0.15s;
+  }
+  #listaFrutas li:hover { background: #e9ecef; }
+  #sinResultados { color: #888; font-style: italic; }
+</style>

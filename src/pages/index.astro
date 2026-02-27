@@ -1,17 +1,66 @@
 ---
-
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Principal</title>
+</head>
+<body class="bg-slate-950 text-white min-h-screen flex items-center justify-center p-6 selection:bg-cyan-500/30">
+
+    
+    <main class="max-w-6xl w-full">
+        <header class="text-center mb-16 space-y-4">
+            <h1 class="text-5xl md:text-7xl font-black tracking-tighter bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600">
+                Equipo 1
+            </h1>
+        </header>
+
+        <nav class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            
+            <section class="group relative p-8 rounded-3xl bg-slate-900/50 border border-slate-800 hover:border-cyan-500/50 transition-all duration-300 hover:-translate-y-2 backdrop-blur-xl">
+                <div class="text-4xl mb-4 group-hover:scale-110 transition-transform duration-300">🗒️</div>
+                <h2 class="text-2xl font-bold mb-3 text-white">Ejercicios</h2>
+                <p class="text-slate-400 text-sm leading-relaxed mb-6">20 ejercicios resueltos</p>
+                <a href="ejercicios9-12.astro" class="block w-full py-3 px-4 bg-cyan-600 hover:bg-cyan-500 text-white text-center rounded-xl font-semibold transition-colors">Abrir Carpeta</a>
+            </section>
+
+            <section class="group relative p-8 rounded-3xl bg-slate-900/50 border border-slate-800 hover:border-yellow-500/50 transition-all duration-300 hover:-translate-y-2 backdrop-blur-xl">
+                <div class="text-4xl mb-4 group-hover:scale-110 transition-transform duration-300">🐾</div>
+                <h2 class="text-2xl font-bold mb-3 text-white">Pokédex</h2>
+                <p class="text-slate-400 text-sm leading-relaxed mb-6">Explora tus pokemons favoritos</p>
+                <a href="/pokemons" class="block w-full py-3 px-4 bg-yellow-600 hover:bg-yellow-500 text-white text-center rounded-xl font-semibold transition-colors">Explorar API</a>
+            </section>
+
+            <section class="group relative p-8 rounded-3xl bg-slate-900/50 border border-slate-800 hover:border-pink-500/50 transition-all duration-300 hover:-translate-y-2 backdrop-blur-xl">
+                <div class="text-4xl mb-4 group-hover:scale-110 transition-transform duration-300">❤️</div>
+                <h2 class="text-2xl font-bold mb-3 text-white">Favoritos</h2>
+                <p class="text-slate-400 text-sm leading-relaxed mb-6">Tus pokemons favoritos en un solo lugar</p>
+                <a href="/favoritos" class="block w-full py-3 px-4 bg-pink-600 hover:bg-pink-500 text-white text-center rounded-xl font-semibold transition-colors">Ver Colección</a>
+            </section>
+
+            <section class="group relative p-8 rounded-3xl bg-slate-900/50 border border-slate-800 hover:border-purple-500/50 transition-all duration-300 hover:-translate-y-2 backdrop-blur-xl">
+                <div class="text-4xl mb-4 group-hover:scale-110 transition-transform duration-300">👥</div>
+                <h2 class="text-2xl font-bold mb-3 text-white">Colaboradores</h2>
+                <p class="text-slate-400 text-sm leading-relaxed mb-6">Créditos y perfiles de los desarrolladores participantes.</p>
+                <a href="/equipo" class="block w-full py-3 px-4 bg-purple-600 hover:bg-purple-500 text-white text-center rounded-xl font-semibold transition-colors">Ver Equipo</a>
+            </section>
+
+            <section class="group relative p-8 rounded-3xl bg-slate-900/50 border border-slate-800 hover:border-emerald-500/50 transition-all duration-300 hover:-translate-y-2 backdrop-blur-xl lg:col-span-2">
+                <div class="flex flex-col md:flex-row items-center gap-6 text-center md:text-left">
+                    <div class="text-5xl group-hover:rotate-12 transition-transform duration-300">📖</div>
+                    <div class="flex-grow">
+                        <h2 class="text-2xl font-bold text-white">Documentación Técnica</h2>
+                        <p class="text-slate-400 text-sm">Manual de usuario, tecnologías utilizadas y estructura del proyecto.</p>
+                    </div>
+                    <a href="/guia" class="w-full md:w-auto py-3 px-8 bg-emerald-600 hover:bg-emerald-500 text-white text-center rounded-xl font-semibold transition-colors">Leer Guía</a>
+                </div>
+            </section>
+
+        </nav>
+    </main>
+
+</body>
 </html>

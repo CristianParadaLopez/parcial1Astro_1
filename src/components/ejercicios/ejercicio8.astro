@@ -1,0 +1,83 @@
+---
+//Mensajecondicional.astro
+---
+
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Mensaje Condicional</title>
+
+  <style>
+    body{
+      margin:0;
+      font-family:Segoe UI;
+      background:linear-gradient(135deg,#89f7fe,#66a6ff);
+      height:100vh;
+      display:flex;
+      justify-content:center;
+      align-items:center;
+    }
+
+    .card{
+      background:white;
+      padding:30px;
+      border-radius:18px;a
+      text-align:center;
+      width:340px;
+      box-shadow:0 12px 30px rgba(0,0,0,.25);
+    }
+
+    button{
+      margin:10px;
+      padding:12px 18px;
+      border:none;
+      border-radius:12px;
+      font-size:15px;
+      font-weight:bold;
+      cursor:pointer;
+      color:white;
+      transition:.25s;
+    }
+
+    .a{ background:#22c55e; }
+    .b{ background:#ef4444; }
+
+    button:hover{
+      transform:scale(1.1);
+    }
+
+    #mensaje{
+      margin-top:25px;
+      font-size:20px;
+      font-weight:bold;
+      min-height:28px;
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="card">
+<h2>Mensaje Condicional</h2>
+
+<button class="a" id="btnA">Mostrar mensaje A</button>
+<button class="b" id="btnB">Mostrar mensaje B</button>
+
+<div id="mensaje"></div>
+</div>
+
+<script>
+    // @ts-nocheck
+const mensaje = document.getElementById("mensaje");
+
+document.getElementById("btnA").addEventListener("click",()=>{
+  mensaje.textContent="Este es el mensaje A";
+});
+
+document.getElementById("btnB").addEventListener("click",()=>{
+  mensaje.textContent="Este es el mensaje B";
+});
+</script>
+
+</body>
+</html>
