@@ -1,0 +1,105 @@
+---
+import Layout from '../../../layouts/LayoutProyecto.astro';
+import PokemonCard from '../../../components/proyecto-final/PokemonCard.astro';
+
+const url = new URL(Astro.request.url);
+const tipo = url.searchParams.get("tipo");
+
+// Traducción tipos
+const tiposES: Record<string,string> = {
+  fire:"Fuego",
+  water:"Agua",
+  grass:"Planta",
+  electric:"Eléctrico",
+  ice:"Hielo",
+  fighting:"Lucha",
+  poison:"Veneno",
+  ground:"Tierra",
+  flying:"Volador",
+  psychic:"Psíquico",
+  bug:"Bicho",
+  rock:"Roca",
+  ghost:"Fantasma",
+  dragon:"Dragón",
+  dark:"Siniestro",
+  steel:"Acero",
+  fairy:"Hada",
+  normal:"Normal"
+};
+
+// Tipos API
+interface TipoAPI {
+  name: string;
+  url: string;
+}
+
+// Pokemon API
+interface PokemonTipoAPI {
+  pokemon: {
+    name: string;
+    url: string;
+  };
+}
+
+// Obtener tipos
+const tiposRes = await fetch("https://pokeapi.co/api/v2/type");
+const tiposData: { results: TipoAPI[] } = await tiposRes.json();
+
+// Obtener pokémon del tipo seleccionado
+let pokemons: { id: string; name: string; image: string }[] = [];
+
+if (tipo) {
+  const res = await fetch(`https://pokeapi.co/api/v2/type/${tipo}`);
+  const data: { pokemon: PokemonTipoAPI[] } = await res.json();
+
+  pokemons = data.pokemon.slice(0, 30).map((p: PokemonTipoAPI) => {
+    const id = p.pokemon.url.split("/").filter(Boolean).pop() ?? "0";
+
+    return {
+      id,
+      name: p.pokemon.name,
+      image: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${id}.png`
+    };
+  });
+}
+---
+
+<Layout title="Categorías Pokémon">
+
+<div class="container mx-auto px-6 py-10">
+
+  <h1 class="text-3xl font-bold mb-6 text-center">Buscar por categoría</h1>
+
+  <!-- Tipos -->
+  <div class="flex flex-wrap justify-center gap-3 mb-10">
+    {tiposData.results.map((t: TipoAPI) => (
+      <a
+        href={`/proyecto-final/pokemon/categorias?tipo=${t.name}`}
+        class={`px-4 py-2 rounded-full border transition 
+        ${tipo === t.name 
+          ? "bg-blue-600 text-white" 
+          : "bg-white hover:bg-blue-100"}`}
+      >
+        {tiposES[t.name] ?? t.name}
+      </a>
+    ))}
+  </div>
+
+  <!-- Resultados -->
+  {tipo && (
+    <>
+      <h2 class="text-xl font-semibold mb-6 text-center capitalize">
+        Resultados para tipo: {tiposES[tipo] ?? tipo}
+      </h2>
+
+      <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
+        {pokemons.map(p => (
+          <PokemonCard {...p} />
+        ))}
+      </div>
+    </>
+  )}
+
+</div>
+
+</Layout>
