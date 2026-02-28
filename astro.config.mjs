@@ -8,4 +8,7 @@ export default defineConfig({
   adapter: node({
     mode: 'standalone',
   }),
+  markdown: {
+    syntaxHighlight: 'prism', // Cambiar shiki por prism evita ese error específico
+  },
 });

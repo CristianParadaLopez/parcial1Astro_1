@@ -12,7 +12,9 @@
   const mensaje = document.getElementById('mensaje');
 
   input?.addEventListener('keydown', (event) => {
-   mensaje.textContent = 'Ultima tecla presionada: ' + event.key;
+    if (mensaje) {
+      mensaje.textContent = 'Ultima tecla presionada: ' + event.key;
+    }
   });
 </script>
 

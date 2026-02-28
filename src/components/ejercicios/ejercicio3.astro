@@ -1,35 +1,41 @@
 ---
-// Visibilidad.astro
+// components/ejercicios/ejercicio3.astro
+import LayoutEjercicio from '../../layouts/LayoutEjercicio.astro';
 ---
 
-<div>
-  <button id="toggleBtn">Mostrar/Ocultar Mensaje</button>
-  <p id="message" class="hidden">No se nada jeje.</p>
-</div>
+<LayoutEjercicio title="Control de Visibilidad">
+  <div class="space-y-6">
+    <button id="toggleBtn">Mostrar/Ocultar Mensaje</button>
+    
+    <div id="messageContainer" class="hidden transition-all duration-500 transform scale-95 opacity-0">
+        <p class="p-6 bg-slate-900/80 border border-slate-800 rounded-2xl text-cyan-400 italic shadow-lg">
+            "La persistencia es el camino al éxito." 🚀
+        </p>
+    </div>
+  </div>
+</LayoutEjercicio>
 
 <script>
-  const btn = document.getElementById('toggleBtn') as HTMLButtonElement | null;
-  const message = document.getElementById('message') as HTMLParagraphElement | null;
+  const btn = document.getElementById('toggleBtn');
+  const container = document.getElementById('messageContainer');
 
-  if (btn && message) {
+  if (btn && container) {
     btn.addEventListener('click', () => {
-      message.classList.toggle('hidden');
+      // Usamos clases de Tailwind para una transición suave
+      const isHidden = container.classList.contains('hidden');
+      
+      if (isHidden) {
+        container.classList.remove('hidden');
+        // Pequeño delay para que la animación de entrada funcione
+        setTimeout(() => {
+            container.classList.add('scale-100', 'opacity-100');
+        }, 10);
+      } else {
+        container.classList.remove('scale-100', 'opacity-100');
+        setTimeout(() => {
+            container.classList.add('hidden');
+        }, 300);
+      }
     });
   }
 </script>
-
-<style>
-  .hidden {
-    display: none;
-  }
-
-  button {
-    cursor: pointer;
-    padding: 5px 10px;
-  }
-
-  p {
-    margin-top: 10px;
-    font-weight: bold;
-  }
-</style>
