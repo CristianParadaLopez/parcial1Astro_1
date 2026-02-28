@@ -1,105 +1,70 @@
 ---
-//Calculadora.astro
+// components/ejercicios/Calculadora.astro
+import LayoutEjercicio from '../../layouts/LayoutEjercicio.astro';
 ---
-<style>
-body{
-    font-family:Arial;
-    background:linear-gradient(135deg,#4facfe,#00f2fe);
-    height:100vh;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-}
 
-.card{
-    background:white;
-    padding:30px;
-    border-radius:18px;
-    width:300px;
-    text-align:center;
-    box-shadow:0 10px 25px rgba(0,0,0,.25);
-}
+<LayoutEjercicio title="Calculadora Pro">
+  <div class="max-w-xs mx-auto bg-slate-900 p-8 rounded-3xl shadow-2xl border border-slate-800 text-center">
+    <h2 class="text-2xl font-bold text-white mb-6 tracking-tight">Calculadora</h2>
 
-input{
-    width:90%;
-    padding:10px;
-    margin:10px 0;
-    border-radius:10px;
-    border:1px solid #ccc;
-    text-align:center;
-    font-size:16px;
-}
+    <div class="space-y-3 mb-6">
+      <input 
+        id="n1" 
+        type="number" 
+        placeholder="Primer número" 
+        class="w-full bg-slate-800 border border-slate-700 rounded-xl p-3 text-center text-white outline-none focus:border-cyan-400 focus:ring-1 focus:ring-cyan-400 transition-all placeholder:text-slate-500"
+      />
+      <input 
+        id="n2" 
+        type="number" 
+        placeholder="Segundo número" 
+        class="w-full bg-slate-800 border border-slate-700 rounded-xl p-3 text-center text-white outline-none focus:border-cyan-400 focus:ring-1 focus:ring-cyan-400 transition-all placeholder:text-slate-500"
+      />
+    </div>
 
-.botones button{
-    width:60px;
-    height:45px;
-    margin:5px;
-    font-size:18px;
-    border:none;
-    border-radius:10px;
-    cursor:pointer;
-    background:#667eea;
-    color:white;
-    font-weight:bold;
-}
+    <div class="grid grid-cols-4 gap-2 mb-6">
+      <button data-op="+" class="op-btn h-12 rounded-xl bg-slate-800 text-cyan-400 font-bold text-xl hover:bg-cyan-500 hover:text-slate-900 transition-all active:scale-90 border border-slate-700">+</button>
+      <button data-op="-" class="op-btn h-12 rounded-xl bg-slate-800 text-cyan-400 font-bold text-xl hover:bg-cyan-500 hover:text-slate-900 transition-all active:scale-90 border border-slate-700">−</button>
+      <button data-op="*" class="op-btn h-12 rounded-xl bg-slate-800 text-cyan-400 font-bold text-xl hover:bg-cyan-500 hover:text-slate-900 transition-all active:scale-90 border border-slate-700">×</button>
+      <button data-op="/" class="op-btn h-12 rounded-xl bg-slate-800 text-cyan-400 font-bold text-xl hover:bg-cyan-500 hover:text-slate-900 transition-all active:scale-90 border border-slate-700">÷</button>
+    </div>
 
-.botones button:hover{
-    background:#5a67d8;
-}
-
-#resultado{
-    margin-top:15px;
-    font-size:20px;
-    font-weight:bold;
-}
-</style>
-</head>
-<body>
-
-<div class="card">
-<h2>Calculadora</h2>
-
-<input id="n1" type="number" placeholder="Primer número">
-<input id="n2" type="number" placeholder="Segundo número">
-
-<div class="botones">
-<button data-op="+">+</button>
-<button data-op="-">−</button>
-<button data-op="*">×</button>
-<button data-op="/">÷</button>
-</div>
-
-<div id="resultado">Resultado: —</div>
-</div>
+    <div id="resultado" class="py-4 px-2 rounded-xl bg-slate-950 border border-slate-800 text-cyan-400 font-mono font-bold text-lg min-h-[60px] flex items-center justify-center">
+      Resultado: —
+    </div>
+  </div>
+</LayoutEjercicio>
 
 <script>
-    // @ts-nocheck
-const botones = document.querySelectorAll(".botones button");
+  const botones = document.querySelectorAll(".op-btn");
+  const resDisplay = document.getElementById("resultado");
+  const inputN1 = document.getElementById("n1") as HTMLInputElement;
+  const inputN2 = document.getElementById("n2") as HTMLInputElement;
 
-botones.forEach(btn=>{
-    btn.addEventListener("click", ()=>{
+  botones.forEach(btn => {
+    btn.addEventListener("click", () => {
+      const a = parseFloat(inputN1.value);
+      const b = parseFloat(inputN2.value);
+      const op = (btn as HTMLButtonElement).dataset.op;
+      let r: string | number;
 
-        let a = parseFloat(document.getElementById("n1").value);
-        let b = parseFloat(document.getElementById("n2").value);
-        let op = btn.dataset.op;
-        let r;
-
-        if(isNaN(a) || isNaN(b)){
-            r="Ingresa ambos números";
-        }else{
-            if(op==="+") r=a+b;
-            if(op==="-" ) r=a-b;
-            if(op==="*") r=a*b;
-            if(op==="/"){
-                if(b===0) r="No se puede dividir entre 0";
-                else r=a/b;
-            }
+      if (isNaN(a) || isNaN(b)) {
+        r = "Ingresa números";
+      } else {
+        switch (op) {
+          case "+": r = a + b; break;
+          case "-": r = a - b; break;
+          case "*": r = a * b; break;
+          case "/": 
+            r = b === 0 ? "Error: ÷ 0" : (a / b).toLocaleString(); 
+            break;
+          default: r = 0;
         }
+      }
 
-        document.getElementById("resultado").textContent="Resultado: "+r;
+      if (resDisplay) {
+        resDisplay.innerHTML = `Resultado: <span class="ml-2 text-white">${r}</span>`;
+      }
     });
-});
+  });
 </script>
-
-</body>
-</html>

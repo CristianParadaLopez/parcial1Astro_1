@@ -1,11 +1,24 @@
 ---
-// Alerta.astro
+// components/ejercicios/Alerta.astro
+import LayoutEjercicio from '../../layouts/LayoutEjercicio.astro';
 ---
 
-<div>
-  <input type="text" id="alertInput" placeholder="Escribe algo..." />
-  <button id="alertBtn">Mostrar Alerta</button>
-</div>
+<LayoutEjercicio title="Sistema de Alertas">
+  <div class="flex gap-3 items-center">
+    <input 
+      type="text" 
+      id="alertInput" 
+      placeholder="Escribe algo..." 
+      class="px-4 py-2 rounded bg-slate-800 border border-slate-700 text-white focus:outline-none focus:border-cyan-400 transition-colors"
+    />
+    <button 
+      id="alertBtn" 
+      class="px-4 py-2 bg-cyan-500 hover:bg-cyan-600 text-slate-900 font-bold rounded transition-colors"
+    >
+      Mostrar Alerta
+    </button>
+  </div>
+</LayoutEjercicio>
 
 <script>
   const input = document.getElementById('alertInput') as HTMLInputElement | null;
@@ -23,15 +36,3 @@
     });
   }
 </script>
-
-<style>
-  div {
-    display: flex;
-    gap: 8px;
-    font-family: sans-serif;
-  }
-
-  input, button {
-    padding: 5px;
-  }
-</style>

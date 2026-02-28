@@ -1,65 +1,47 @@
 ---
-// Ejercicio 12 — Cambiador de Texto
+// components/ejercicios/CambiadorTexto.astro
+import LayoutEjercicio from '../../layouts/LayoutEjercicio.astro';
 ---
 
-<meta charset="UTF-8" />
+<LayoutEjercicio title="12. Cambiador de Texto">
+  <div class="max-w-md mx-auto bg-slate-900 p-10 rounded-2xl shadow-2xl border border-slate-800 text-center">
+    <h2 class="text-xl font-bold text-white mb-8 tracking-tight">Interacción de Botón</h2>
+    
+    <div class="flex flex-col items-center gap-6">
+      <button 
+        id="toggleTextBtn" 
+        class="group relative px-8 py-4 bg-slate-800 border border-slate-700 rounded-xl overflow-hidden transition-all duration-300 hover:border-cyan-400 active:scale-95"
+      >
+        <span id="btnLabel" class="relative z-10 text-cyan-400 font-bold text-lg transition-colors group-hover:text-white">
+          Haz clic aquí
+        </span>
+        
+        <div class="absolute inset-0 bg-gradient-to-r from-cyan-500 to-blue-600 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+      </button>
 
-<div class="main-container">
-
-  <section class="exercise-card">
-    <div class="content">
-      <h2>12. Cambiador de Texto</h2>
-      <button id="toggleTextBtn" class="btn-primary">Haz clic aquí</button>
+      <p class="text-slate-500 text-sm italic">
+        El estado del botón cambia con cada interacción
+      </p>
     </div>
-  </section>
-
-</div>
+  </div>
+</LayoutEjercicio>
 
 <script>
   const toggleTextBtn = document.getElementById('toggleTextBtn');
-  let clicRealizado   = false;
-  if (toggleTextBtn) {
+  const btnLabel = document.getElementById('btnLabel');
+  let clicRealizado = false;
+
+  if (toggleTextBtn && btnLabel) {
     toggleTextBtn.addEventListener('click', () => {
       clicRealizado = !clicRealizado;
-      toggleTextBtn.textContent = clicRealizado ? '¡Has hecho clic!' : 'Haz clic aquí';
+      
+      btnLabel.textContent = clicRealizado ? '¡Has hecho clic!' : 'Haz clic aquí';
+      
+      if (clicRealizado) {
+        toggleTextBtn.classList.add('border-cyan-400/50');
+      } else {
+        toggleTextBtn.classList.remove('border-cyan-400/50');
+      }
     });
   }
 </script>
-
-<style>
-  .main-container {
-    max-width: 600px;
-    margin: 40px auto;
-    display: flex;
-    flex-direction: column;
-    gap: 30px;
-    font-family: system-ui, -apple-system, sans-serif;
-    padding: 20px;
-  }
-
-  .exercise-card {
-    background: #fff;
-    padding: 25px;
-    border: 1px solid #e1e1e1;
-    border-radius: 12px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-  }
-
-  h2 {
-    margin-top: 0;
-    font-size: 1.4rem;
-    color: #222;
-  }
-
-  button {
-    padding: 10px 18px;
-    border-radius: 6px;
-    cursor: pointer;
-    font-weight: 600;
-    border: none;
-    transition: background 0.2s;
-  }
-
-  .btn-primary { background: #007bff; color: white; }
-  .btn-primary:hover { background: #0056b3; }
-</style>

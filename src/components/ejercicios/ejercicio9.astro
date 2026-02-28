@@ -1,86 +1,52 @@
 ---
-// Ejercicio 9 — Nombre Completo Automatico
+// components/ejercicios/NombreCompleto.astro
+import LayoutEjercicio from '../../layouts/LayoutEjercicio.astro';
 ---
 
-<meta charset="UTF-8" />
-
-<div class="main-container">
-
-  <section class="exercise-card">
-    <div class="content">
-      <h2>9. Nombre Completo Automático</h2>
-      <div class="input-row">
-        <input type="text" id="inputNombre"   placeholder="Nombre..."   />
-        <input type="text" id="inputApellido" placeholder="Apellido..." />
-      </div>
-      <p id="nombreCompleto">Tu nombre completo aparecerá aquí</p>
+<LayoutEjercicio title="9. Nombre Completo Automático">
+  <div class="max-w-md mx-auto bg-slate-900 p-8 rounded-2xl shadow-2xl border border-slate-800">
+    <h2 class="text-xl font-bold text-white mb-6 text-center tracking-tight">Identificador de Usuario</h2>
+    
+    <div class="flex flex-col sm:flex-row gap-3">
+      <input 
+        type="text" 
+        id="inputNombre" 
+        placeholder="Nombre..." 
+        class="flex-1 px-4 py-2 rounded-lg bg-slate-800 border border-slate-700 text-white placeholder:text-slate-500 focus:outline-none focus:border-cyan-400 transition-colors"
+      />
+      <input 
+        type="text" 
+        id="inputApellido" 
+        placeholder="Apellido..." 
+        class="flex-1 px-4 py-2 rounded-lg bg-slate-800 border border-slate-700 text-white placeholder:text-slate-500 focus:outline-none focus:border-cyan-400 transition-colors"
+      />
     </div>
-  </section>
 
-</div>
+    <p id="nombreCompleto" class="mt-6 text-center text-slate-300 text-lg">
+      Tu nombre completo aparecerá aquí
+    </p>
+  </div>
+</LayoutEjercicio>
 
 <script>
-  const inputNombre    = document.getElementById('inputNombre')    as HTMLInputElement | null;
-  const inputApellido  = document.getElementById('inputApellido')  as HTMLInputElement | null;
+  const inputNombre = document.getElementById('inputNombre') as HTMLInputElement | null;
+  const inputApellido = document.getElementById('inputApellido') as HTMLInputElement | null;
   const nombreCompleto = document.getElementById('nombreCompleto');
+
   if (inputNombre && inputApellido && nombreCompleto) {
-    function actualizarNombre() {
-      const nombre   = inputNombre!.value.trim();
-      const apellido = inputApellido!.value.trim();
+    const actualizarNombre = () => {
+      const nombre = inputNombre.value.trim();
+      const apellido = inputApellido.value.trim();
       const completo = [nombre, apellido].filter(Boolean).join(' ');
-      nombreCompleto!.textContent = completo || 'Tu nombre completo aparecerá aquí';
-    }
+
+      if (completo) {
+        nombreCompleto.innerHTML = `Hola, <span class="text-cyan-400 font-bold">${completo}</span>`;
+      } else {
+        nombreCompleto.textContent = 'Tu nombre completo aparecerá aquí';
+      }
+    };
+
     inputNombre.addEventListener('input', actualizarNombre);
     inputApellido.addEventListener('input', actualizarNombre);
   }
 </script>
-
-<style>
-  .main-container {
-    max-width: 600px;
-    margin: 40px auto;
-    display: flex;
-    flex-direction: column;
-    gap: 30px;
-    font-family: system-ui, -apple-system, sans-serif;
-    padding: 20px;
-  }
-
-  .exercise-card {
-    background: #fff;
-    padding: 25px;
-    border: 1px solid #e1e1e1;
-    border-radius: 12px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-  }
-
-  h2 {
-    margin-top: 0;
-    font-size: 1.4rem;
-    color: #222;
-  }
-
-  input {
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 6px;
-    font-size: 1rem;
-    width: 100%;
-    max-width: 300px;
-    box-sizing: border-box;
-  }
-
-  .hidden { display: none; }
-  p { font-weight: 500; color: #444; margin-top: 15px; }
-
-  .input-row {
-    display: flex;
-    gap: 10px;
-    flex-wrap: wrap;
-  }
-  .input-row input {
-    flex: 1;
-    min-width: 120px;
-    max-width: 100%;
-  }
-</style>

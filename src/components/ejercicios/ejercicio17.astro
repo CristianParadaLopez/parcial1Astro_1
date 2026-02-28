@@ -1,57 +1,49 @@
 ---
-// Formulario con Validación
+import LayoutEjercicio from '../../layouts/LayoutEjercicio.astro';
 ---
 
-<div class="card">
-  <h2>Formulario</h2>
-  
-  <input 
-    type="text" 
-    id="nameInput" 
-    placeholder="Escribe tu nombre..." 
-  />
-  <input 
-    type="text" 
-    id="emailInput" 
-    placeholder="Escribe tu email..." 
-  />
+<LayoutEjercicio title="Formulario con Validación">
+  <div class="max-w-md mx-auto bg-slate-900 p-8 rounded-2xl shadow-2xl border border-slate-800 text-center">
+    <h2 class="text-xl font-bold text-white mb-6 tracking-tight">Registro de Usuario</h2>
+    
+    <div class="space-y-4">
+      <input 
+        type="text" 
+        id="nameInput" 
+        placeholder="Escribe tu nombre..." 
+        class="w-full px-4 py-2 rounded-lg bg-slate-800 border border-slate-700 text-white placeholder:text-slate-500 focus:outline-none focus:border-cyan-400 transition-colors"
+      />
+      
+      <input 
+        type="text" 
+        id="emailInput" 
+        placeholder="Escribe tu email..." 
+        class="w-full px-4 py-2 rounded-lg bg-slate-800 border border-slate-700 text-white placeholder:text-slate-500 focus:outline-none focus:border-cyan-400 transition-colors"
+      />
 
-  <p id="welcomeMessage">Hola, invitado</p>
-</div>
+      <div class="mt-6 p-4 bg-slate-950 rounded-xl border border-slate-800">
+        <p id="welcomeMessage" class="text-slate-300 text-lg">
+          Hola, invitado
+        </p>
+      </div>
+    </div>
+  </div>
+</LayoutEjercicio>
 
 <script>
   const nameInput = document.getElementById('nameInput') as HTMLInputElement | null;
-  const emailInput = document.getElementById('emailInput') as HTMLInputElement | null;
   const message = document.getElementById('welcomeMessage');
 
-  if (nameInput && emailInput && message) {
+  if (nameInput && message) {
     nameInput.addEventListener('input', (e) => {
       const target = e.target as HTMLInputElement;
       const name = target.value.trim();
-      message.textContent = name ? `Hola, ${name}` : 'Hola, invitado';
+      
+      if (name) {
+        message.innerHTML = `Hola, <span class="text-cyan-400 font-bold">${name}</span>`;
+      } else {
+        message.textContent = 'Hola, invitado';
+      }
     });
   }
 </script>
-
-<style>
-  .card {
-    padding: 20px;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    max-width: 300px;
-    font-family: sans-serif;
-  }
-
-  input {
-    width: 100%;
-    padding: 8px;
-    margin-bottom: 10px;
-    box-sizing: border-box;
-  }
-
-  p {
-    font-size: 1.2rem;
-    font-weight: bold;
-    color: #333;
-  }
-</style>
