@@ -1,49 +1,73 @@
 ---
-import '../styles/global.css';
-
-interface Props {
-  title: string;
-}
-
+interface Props { title: string; }
 const { title } = Astro.props;
 ---
-
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <title>{title} | Ejercicios Básicos</title>
-</head>
-<body class="bg-slate-50 min-h-screen flex flex-col font-sans">
-    <nav class="bg-white border-b border-slate-200 p-4 mb-8 shadow-sm">
-        <div class="container mx-auto flex justify-between items-center">
-            <div class="flex gap-6 items-center">
-                <a href="/" class="text-slate-800 font-bold flex items-center gap-2 hover:text-blue-600 transition-colors">
-                    <span>&larr;</span> Inicio
-                </a>
-                <a href="/proyecto-final" class="text-sm text-slate-600 hover:text-blue-500">Pokémon API</a>
-            </div>
-            <span class="text-slate-400 text-xs hidden sm:inline uppercase tracking-widest font-semibold">Parcial 2026</span>
-        </div>
-    </nav>
-
-    <main class="container mx-auto px-4 flex-grow flex flex-col items-center">
-        <header class="text-center mb-10">
-            <h1 class="text-3xl font-extrabold text-slate-900 mb-2">{title}</h1>
-            <div class="h-1.5 w-16 bg-blue-600 mx-auto rounded-full"></div>
-        </header>
-
-        <section class="w-full flex justify-center pb-20">
+<div class="w-full max-w-lg mx-auto p-1 bg-gradient-to-br from-slate-800 to-slate-900 rounded-[2.5rem] shadow-2xl">
+    <div class="bg-slate-950/90 backdrop-blur-md rounded-[2.4rem] p-10 relative overflow-hidden">
+        
+        <h3 class="text-2xl font-black text-center mb-8 bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600">
+            {title}
+        </h3>
+        
+        <div class="custom-exercise-wrapper">
             <slot />
-        </section>
-    </main>
+        </div>
+    </div>
+</div>
 
-    <footer class="bg-white border-t border-slate-200 py-6">
-        <p class="text-center text-slate-400 text-sm italic">
-            Práctica de DOM y Manipulación de Eventos con Astro
-        </p>
-    </footer>
-</body>
-</html>
+<style is:global>
+    /* RESET DE ESTILOS PARA LOS EJERCICIOS INTERNOS */
+    .custom-exercise-wrapper {
+        color: #cbd5e1 !important;
+        text-align: center;
+    }
+
+    .custom-exercise-wrapper input {
+        background: #0f172a !important;
+        border: 1px solid #1e293b !important;
+        padding: 14px 18px !important;
+        border-radius: 16px !important;
+        color: white !important;
+        width: 100% !important;
+        margin-bottom: 20px !important;
+        outline: none !important;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        text-align: center;
+    }
+
+    .custom-exercise-wrapper input:focus {
+        border-color: #06b6d4 !important;
+        box-shadow: 0 0 0 4px rgba(6, 182, 212, 0.1) !important;
+        transform: scale(1.02);
+    }
+
+    .custom-exercise-wrapper button {
+        background: #0891b2 !important;
+        color: white !important;
+        padding: 14px 28px !important;
+        border-radius: 16px !important;
+        font-weight: 700 !important;
+        border: none !important;
+        cursor: pointer !important;
+        transition: all 0.3s ease;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        font-size: 0.8rem;
+    }
+
+    .custom-exercise-wrapper button:hover {
+        background: #06b6d4 !important;
+        transform: translateY(-2px);
+        box-shadow: 0 10px 20px rgba(6, 182, 212, 0.2);
+    }
+
+    .custom-exercise-wrapper p, .custom-exercise-wrapper span {
+        color: #f8fafc !important;
+        font-size: 1.1rem;
+        margin-top: 15px;
+    }
+
+    .custom-exercise-wrapper b, .custom-exercise-wrapper strong {
+        color: #22d3ee !important; /* Cyan 400 */
+    }
+</style>

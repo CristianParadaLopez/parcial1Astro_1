@@ -1,0 +1,35 @@
+---
+// components/proyecto-final/PokemonList.astro
+import PokemonCard from './PokemonCard.astro';
+
+// 1. Recibimos la prop 'page' que viene del index
+const { page = 1 } = Astro.props;
+
+// 2. Calculamos el offset (si es pag 2, el offset es 20, si es pag 3, es 40...)
+const limit = 20;
+const offset = (page - 1) * limit;
+
+// 3. Hacemos el fetch usando ese offset dinámico
+const response = await fetch(`https://pokeapi.co/api/v2/pokemon?limit=${limit}&offset=${offset}`);
+const data = await response.json();
+
+// 4. Mapeamos para obtener los IDs y las imágenes oficiales
+const pokemons = data.results.map((p: any) => {
+  const id = p.url.split('/').filter(Boolean).pop();
+  return {
+    id,
+    name: p.name,
+    image: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${id}.png`
+  };
+});
+---
+
+<div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6">
+  {pokemons.map((pokemon: any) => (
+    <PokemonCard {...pokemon} />
+  ))}
+</div>
+
+{pokemons.length === 0 && (
+  <p class="text-center text-slate-500 py-10">No se encontraron Pokémon en esta página.</p>
+)}

@@ -1,0 +1,56 @@
+---
+// components/proyecto-final/PokemonCategorias.astro
+interface Props {
+  tipoActual: string | null;
+}
+
+const { tipoActual } = Astro.props;
+
+// Diccionario de Iconos y Colores elegantes
+const configTipos: Record<string, {esp: string, icon: string, color: string}> = {
+  fire: { esp: "Fuego", icon: "🔥", color: "hover:border-orange-500 hover:shadow-orange-900/20" },
+  water: { esp: "Agua", icon: "💧", color: "hover:border-blue-500 hover:shadow-blue-900/20" },
+  grass: { esp: "Planta", icon: "🍃", color: "hover:border-emerald-500 hover:shadow-emerald-900/20" },
+  electric: { esp: "Eléctrico", icon: "⚡", color: "hover:border-yellow-400 hover:shadow-yellow-900/20" },
+  ice: { esp: "Hielo", icon: "❄️", color: "hover:border-cyan-300 hover:shadow-cyan-900/20" },
+  fighting: { esp: "Lucha", icon: "👊", color: "hover:border-red-700 hover:shadow-red-900/20" },
+  poison: { esp: "Veneno", icon: "🧪", color: "hover:border-purple-500 hover:shadow-purple-900/20" },
+  ground: { esp: "Tierra", icon: "🌍", color: "hover:border-amber-700 hover:shadow-amber-900/20" },
+  flying: { esp: "Volador", icon: "🕊️", color: "hover:border-sky-400 hover:shadow-sky-900/20" },
+  psychic: { esp: "Psíquico", icon: "🔮", color: "hover:border-pink-500 hover:shadow-pink-900/20" },
+  bug: { esp: "Bicho", icon: "🪲", color: "hover:border-lime-500 hover:shadow-lime-900/20" },
+  rock: { esp: "Roca", icon: "🪨", color: "hover:border-stone-500 hover:shadow-stone-900/20" },
+  ghost: { esp: "Fantasma", icon: "👻", color: "hover:border-indigo-500 hover:shadow-indigo-900/20" },
+  dragon: { esp: "Dragón", icon: "🐲", color: "hover:border-violet-600 hover:shadow-violet-900/20" },
+  dark: { esp: "Siniestro", icon: "🌑", color: "hover:border-slate-700 hover:shadow-slate-900/20" },
+  steel: { esp: "Acero", icon: "⚙️", color: "hover:border-slate-400 hover:shadow-slate-900/20" },
+  fairy: { esp: "Hada", icon: "✨", color: "hover:border-pink-300 hover:shadow-pink-900/20" },
+  normal: { esp: "Normal", icon: "🔘", color: "hover:border-slate-500 hover:shadow-slate-900/20" }
+};
+
+const res = await fetch("https://pokeapi.co/api/v2/type");
+const data = await res.json();
+const tiposFiltro = data.results.filter((t: any) => configTipos[t.name]); // Solo tipos con config
+---
+
+<div class="flex flex-wrap justify-center gap-3 my-10">
+  {tiposFiltro.map((t: any) => {
+    const info = configTipos[t.name];
+    const activo = tipoActual === t.name;
+    
+    return (
+      <a
+        href={`/proyecto-final/pokemon/categorias?tipo=${t.name}`}
+        class={`flex items-center gap-2 px-5 py-2.5 rounded-2xl border transition-all duration-300 group
+        ${activo 
+          ? "bg-white text-slate-950 border-white scale-110 shadow-xl shadow-white/10 font-black" 
+          : `bg-slate-900/40 border-slate-800 text-slate-400 hover:text-white ${info.color}`}`}
+      >
+        <span class={`text-lg ${activo ? '' : 'grayscale group-hover:grayscale-0'} transition-all`}>
+            {info.icon}
+        </span>
+        <span class="text-sm tracking-tight">{info.esp}</span>
+      </a>
+    )
+  })}
+</div>

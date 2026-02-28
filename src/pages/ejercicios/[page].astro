@@ -1,0 +1,95 @@
+---
+import LayoutProyecto from '../../layouts/LayoutProyecto.astro';
+
+// Importaciones dinámicas
+import Ejercicio1 from '../../components/ejercicios/ejercicio1.astro';
+import Ejercicio2 from '../../components/ejercicios/ejercicio2.astro';
+import Ejercicio3 from '../../components/ejercicios/ejercicio3.astro';
+import Ejercicio4 from '../../components/ejercicios/ejercicio4.astro';
+import Ejercicio5 from '../../components/ejercicios/ejercicio5.astro';
+import Ejercicio6 from '../../components/ejercicios/ejercicio6.astro';
+import Ejercicio7 from '../../components/ejercicios/ejercicio7.astro';
+import Ejercicio8 from '../../components/ejercicios/ejercicio8.astro';
+import Ejercicio9 from '../../components/ejercicios/ejercicio9.astro';
+import Ejercicio10 from '../../components/ejercicios/ejercicio10.astro';
+import Ejercicio11 from '../../components/ejercicios/ejercicio11.astro';
+import Ejercicio12 from '../../components/ejercicios/ejercicio12.astro';
+import Ejercicio13 from '../../components/ejercicios/ejercicio13.astro';
+import Ejercicio14 from '../../components/ejercicios/ejercicio14.astro';
+import Ejercicio15 from '../../components/ejercicios/ejercicio15.astro';
+import Ejercicio16 from '../../components/ejercicios/ejercicio16.astro';
+import Ejercicio17 from '../../components/ejercicios/ejercicio17.astro';
+
+export async function getStaticPaths() {
+    const totalEjercicios = 17; 
+    return Array.from({ length: totalEjercicios }, (_, i) => ({
+        params: { page: (i + 1).toString() },
+    }));
+}
+
+const { page } = Astro.params;
+const currentPage = parseInt(page);
+
+const ejercicios = [
+    Ejercicio1, Ejercicio2, Ejercicio3, Ejercicio4, Ejercicio5,
+    Ejercicio6, Ejercicio7, Ejercicio8, Ejercicio9, Ejercicio10,
+    Ejercicio11, Ejercicio12, Ejercicio13, Ejercicio14, Ejercicio15,
+    Ejercicio16, Ejercicio17
+];
+
+const CurrentEjercicio = ejercicios[currentPage - 1];
+---
+
+<LayoutProyecto title={`Ejercicio ${currentPage} | Guía Técnica`}>
+    <div class="max-w-4xl w-full flex flex-col items-center">
+        
+        <header class="text-center mb-12">
+            <h1 class="text-5xl md:text-7xl font-black tracking-tighter text-white mb-4">
+                Resolución <span class="text-cyan-500">#{currentPage}</span>
+            </h1>
+            <p class="text-slate-400 text-lg">Explorando conceptos avanzados de JavaScript y DOM.</p>
+        </header>
+
+        <div class="w-full relative py-10">
+            {CurrentEjercicio ? <CurrentEjercicio /> : (
+                <div class="text-center p-20 bg-slate-900/50 rounded-3xl border border-dashed border-slate-700">
+                    <p class="text-slate-500 italic text-xl">Módulo en desarrollo...</p>
+                </div>
+            )}
+        </div>
+
+        <div class="w-full mt-10 space-y-8">
+            <nav class="flex justify-between items-center bg-slate-900/40 p-4 rounded-2xl border border-slate-800">
+                {currentPage > 1 ? (
+                    <a href={`/ejercicios/${currentPage - 1}`} class="px-6 py-3 bg-slate-800 hover:bg-slate-700 text-white rounded-xl font-bold transition-all">
+                        &larr; Anterior
+                    </a>
+                ) : <div />}
+
+                <div class="text-center">
+                    <span class="block text-[10px] uppercase tracking-[0.2em] text-slate-500 font-bold mb-1">Progreso</span>
+                    <span class="text-white font-mono text-xl">{currentPage} <span class="text-slate-700">/</span> {ejercicios.length}</span>
+                </div>
+
+                {currentPage < ejercicios.length ? (
+                    <a href={`/ejercicios/${currentPage + 1}`} class="px-6 py-3 bg-cyan-600 hover:bg-cyan-500 text-white rounded-xl font-bold transition-all shadow-lg shadow-cyan-900/20">
+                        Siguiente &rarr;
+                    </a>
+                ) : <div />}
+            </nav>
+
+            <div class="flex flex-wrap justify-center gap-3">
+                {ejercicios.map((_, i) => (
+                    <a 
+                        href={`/ejercicios/${i + 1}`}
+                        class={`w-11 h-11 flex items-center justify-center rounded-xl text-sm font-black transition-all border ${currentPage === i + 1 
+                            ? 'bg-cyan-500 border-cyan-400 text-slate-950 scale-110 shadow-xl' 
+                            : 'bg-slate-900 border-slate-800 text-slate-500 hover:border-slate-600 hover:text-white'}`}
+                    >
+                        {i + 1}
+                    </a>
+                ))}
+            </div>
+        </div>
+    </div>
+</LayoutProyecto>

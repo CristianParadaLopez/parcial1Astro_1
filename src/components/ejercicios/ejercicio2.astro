@@ -1,20 +1,26 @@
 ---
-// Contador.astro
+// components/ejercicios/ejercicio2.astro
+import LayoutEjercicio from '../../layouts/LayoutEjercicio.astro';
 ---
 
-<div>
-  <h2>Contador: <span id="display">0</span></h2>
-  
-  <button id="incrementBtn">Incrementar</button>
-  <button id="resetBtn">Reiniciar</button>
-</div>
+<LayoutEjercicio title="Contador Dinámico">
+  <div class="flex flex-col items-center gap-6">
+    <div class="text-6xl font-black text-white bg-slate-900/50 w-32 h-32 flex items-center justify-center rounded-full border border-slate-800 shadow-inner">
+      <span id="display">0</span>
+    </div>
+    
+    <div class="flex gap-4">
+      <button id="incrementBtn">Incrementar</button>
+      <button id="resetBtn" class="!bg-slate-800 hover:!bg-slate-700">Reiniciar</button>
+    </div>
+  </div>
+</LayoutEjercicio>
 
 <script>
   let count: number = 0;
-  
-  const display = document.getElementById('display') as HTMLElement | null;
-  const btnIncrement = document.getElementById('incrementBtn') as HTMLButtonElement | null;
-  const btnReset = document.getElementById('resetBtn') as HTMLButtonElement | null;
+  const display = document.getElementById('display');
+  const btnIncrement = document.getElementById('incrementBtn');
+  const btnReset = document.getElementById('resetBtn');
 
   if (display && btnIncrement && btnReset) {
     btnIncrement.addEventListener('click', () => {
@@ -28,14 +34,3 @@
     });
   }
 </script>
-
-<style>
-  /* Sin diseño, solo estructura básica */
-  div {
-    font-family: sans-serif;
-  }
-  button {
-    margin-right: 5px;
-    cursor: pointer;
-  }
-</style>
