@@ -1,102 +1,82 @@
 ---
-// Ejercicio 11 — Buscador en Tiempo Real
+// components/ejercicios/BuscadorRealTime.astro
+import LayoutEjercicio from '../../layouts/LayoutEjercicio.astro';
 ---
 
-<meta charset="UTF-8" />
-
-<div class="main-container">
-
-  <section class="exercise-card">
-    <div class="content">
-      <h2>11. Buscador en Tiempo Real</h2>
-      <input type="text" id="buscadorInput" placeholder="Buscar fruta..." />
-      <ul id="listaFrutas">
-        <li>Manzana</li>
-        <li>Banana</li>
-        <li>Naranja</li>
-        <li>Uva</li>
-        <li>Sandía</li>
-        <li>Melón</li>
-        <li>Fresa</li>
-        <li>Kiwi</li>
-      </ul>
-      <p id="sinResultados" class="hidden">Sin resultados</p>
+<LayoutEjercicio title="11. Buscador en Tiempo Real">
+  <div class="max-w-md mx-auto bg-slate-900 p-8 rounded-2xl shadow-2xl border border-slate-800">
+    <h2 class="text-xl font-bold text-white mb-6 text-center tracking-tight">Filtro de Inventario</h2>
+    
+    <div class="relative mb-6">
+      <input 
+        type="text" 
+        id="buscadorInput" 
+        placeholder="Buscar fruta..." 
+        class="w-full px-4 py-3 pl-10 rounded-xl bg-slate-800 border border-slate-700 text-white placeholder:text-slate-500 focus:outline-none focus:border-cyan-400 focus:ring-1 focus:ring-cyan-400 transition-all"
+      />
+      <span class="absolute left-3 top-3.5 text-slate-500">🔍</span>
     </div>
-  </section>
 
-</div>
+    <ul id="listaFrutas" class="space-y-2 max-h-60 overflow-y-auto pr-2 custom-scrollbar">
+      <li class="px-4 py-2 rounded-lg bg-slate-800 text-slate-300 border border-slate-700/50 hover:border-cyan-400/50 hover:bg-slate-700/50 transition-all cursor-default">Manzana</li>
+      <li class="px-4 py-2 rounded-lg bg-slate-800 text-slate-300 border border-slate-700/50 hover:border-cyan-400/50 hover:bg-slate-700/50 transition-all cursor-default">Banana</li>
+      <li class="px-4 py-2 rounded-lg bg-slate-800 text-slate-300 border border-slate-700/50 hover:border-cyan-400/50 hover:bg-slate-700/50 transition-all cursor-default">Naranja</li>
+      <li class="px-4 py-2 rounded-lg bg-slate-800 text-slate-300 border border-slate-700/50 hover:border-cyan-400/50 hover:bg-slate-700/50 transition-all cursor-default">Uva</li>
+      <li class="px-4 py-2 rounded-lg bg-slate-800 text-slate-300 border border-slate-700/50 hover:border-cyan-400/50 hover:bg-slate-700/50 transition-all cursor-default">Sandía</li>
+      <li class="px-4 py-2 rounded-lg bg-slate-800 text-slate-300 border border-slate-700/50 hover:border-cyan-400/50 hover:bg-slate-700/50 transition-all cursor-default">Melón</li>
+      <li class="px-4 py-2 rounded-lg bg-slate-800 text-slate-300 border border-slate-700/50 hover:border-cyan-400/50 hover:bg-slate-700/50 transition-all cursor-default">Fresa</li>
+      <li class="px-4 py-2 rounded-lg bg-slate-800 text-slate-300 border border-slate-700/50 hover:border-cyan-400/50 hover:bg-slate-700/50 transition-all cursor-default">Kiwi</li>
+    </ul>
+
+    <p id="sinResultados" class="hidden mt-4 text-center text-slate-500 italic animate-pulse">
+      No se encontraron frutas... 
+    </p>
+  </div>
+</LayoutEjercicio>
 
 <script>
   const buscadorInput = document.getElementById('buscadorInput') as HTMLInputElement | null;
   const listaFrutas   = document.getElementById('listaFrutas');
   const sinResultados = document.getElementById('sinResultados');
+
   if (buscadorInput && listaFrutas && sinResultados) {
     buscadorInput.addEventListener('input', () => {
       const query  = buscadorInput.value.toLowerCase().trim();
       const items  = listaFrutas.querySelectorAll('li');
       let visibles = 0;
+
       items.forEach(item => {
-        const coincide = item.textContent!.toLowerCase().includes(query);
-        item.style.display = coincide ? '' : 'none';
-        if (coincide) visibles++;
+        const texto = item.textContent?.toLowerCase() || "";
+        const coincide = texto.includes(query);
+        
+       
+        if (coincide) {
+          item.classList.remove('hidden');
+          item.classList.add('flex');
+          visibles++;
+        } else {
+          item.classList.add('hidden');
+          item.classList.remove('flex');
+        }
       });
+
       sinResultados.classList.toggle('hidden', visibles > 0);
     });
   }
 </script>
 
 <style>
-  .main-container {
-    max-width: 600px;
-    margin: 40px auto;
-    display: flex;
-    flex-direction: column;
-    gap: 30px;
-    font-family: system-ui, -apple-system, sans-serif;
-    padding: 20px;
+  .custom-scrollbar::-webkit-scrollbar {
+    width: 6px;
   }
-
-  .exercise-card {
-    background: #fff;
-    padding: 25px;
-    border: 1px solid #e1e1e1;
-    border-radius: 12px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  .custom-scrollbar::-webkit-scrollbar-track {
+    background: transparent;
   }
-
-  h2 {
-    margin-top: 0;
-    font-size: 1.4rem;
-    color: #222;
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    background: #334155;
+    border-radius: 10px;
   }
-
-  input {
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 6px;
-    font-size: 1rem;
-    width: 100%;
-    max-width: 300px;
-    box-sizing: border-box;
+  .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: #06b6d4;
   }
-
-  .hidden { display: none; }
-  p { font-weight: 500; color: #444; margin-top: 15px; }
-
-  #listaFrutas {
-    list-style: none;
-    padding: 0;
-    margin-top: 12px;
-  }
-  #listaFrutas li {
-    padding: 8px 12px;
-    border-radius: 6px;
-    margin-bottom: 4px;
-    background: #f8f9fa;
-    color: #333;
-    font-weight: 500;
-    transition: background 0.15s;
-  }
-  #listaFrutas li:hover { background: #e9ecef; }
-  #sinResultados { color: #888; font-style: italic; }
 </style>

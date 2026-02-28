@@ -1,82 +1,50 @@
 ---
-//Mensajecondicional.astro
+// components/ejercicios/MensajeCondicional.astro
+import LayoutEjercicio from '../../layouts/LayoutEjercicio.astro';
 ---
 
-<html lang="es">
-<head>
-  <meta charset="UTF-8" />
-  <title>Mensaje Condicional</title>
+<LayoutEjercicio title="Mensaje Condicional">
+  <div class="max-w-sm mx-auto bg-slate-900 p-8 rounded-2xl shadow-2xl border border-slate-800 text-center">
+    <h2 class="text-xl font-bold text-white mb-6">Elige una opción</h2>
 
-  <style>
-    body{
-      margin:0;
-      font-family:Segoe UI;
-      height:100vh;
-      display:flex;
-      justify-content:center;
-      align-items:center;
-    }
+    <div class="flex flex-wrap justify-center gap-4">
+      <button 
+        id="btnA" 
+        class="px-6 py-3 bg-gradient-to-r from-emerald-500 to-green-600 text-white font-bold rounded-xl hover:scale-110 active:scale-95 transition-all shadow-lg shadow-emerald-900/20"
+      >
+        Mensaje A
+      </button>
 
-    .card{
-      background:white;
-      padding:30px;
-      border-radius:18px;
-      text-align:center;
-      width:340px;
-      box-shadow:0 12px 30px rgba(0,0,0,.25);
-    }
+      <button 
+        id="btnB" 
+        class="px-6 py-3 bg-gradient-to-r from-rose-500 to-red-600 text-white font-bold rounded-xl hover:scale-110 active:scale-95 transition-all shadow-lg shadow-rose-900/20"
+      >
+        Mensaje B
+      </button>
+    </div>
 
-    button{
-      margin:10px;
-      padding:12px 18px;
-      border:none;
-      border-radius:12px;
-      font-size:15px;
-      font-weight:bold;
-      cursor:pointer;
-      color:white;
-      transition:.25s;
-    }
-
-    .a{ background:#22c55e; }
-    .b{ background:#ef4444; }
-
-    button:hover{
-      transform:scale(1.1);
-    }
-
-    #mensaje{
-      margin-top:25px;
-      font-size:20px;
-      font-weight:bold;
-      min-height:28px;
-    }
-  </style>
-</head>
-
-<body>
-
-<div class="card">
-<h2>Mensaje Condicional</h2>
-
-<button class="a" id="btnA">Mostrar mensaje A</button>
-<button class="b" id="btnB">Mostrar mensaje B</button>
-
-<div id="mensaje"></div>
-</div>
+    <div id="mensaje" class="mt-8 min-h-[40px] flex items-center justify-center">
+      <p class="text-slate-400 italic">Esperando selección...</p>
+    </div>
+  </div>
+</LayoutEjercicio>
 
 <script>
-    // @ts-nocheck
-const mensaje = document.getElementById("mensaje");
+  const mensajeDiv = document.getElementById("mensaje") as HTMLDivElement;
+  const btnA = document.getElementById("btnA");
+  const btnB = document.getElementById("btnB");
 
-document.getElementById("btnA").addEventListener("click",()=>{
-  mensaje.textContent="Este es el mensaje A";
-});
+  const actualizarMensaje = (texto: string, colorClass: string) => {
+    if (mensajeDiv) {
+      mensajeDiv.innerHTML = `<span class="${colorClass} font-bold text-xl animate-in fade-in zoom-in duration-300">${texto}</span>`;
+    }
+  };
 
-document.getElementById("btnB").addEventListener("click",()=>{
-  mensaje.textContent="Este es el mensaje B";
-});
+  btnA?.addEventListener("click", () => {
+    actualizarMensaje("Este es el mensaje A", "text-emerald-400");
+  });
+
+  btnB?.addEventListener("click", () => {
+    actualizarMensaje("Este es el mensaje B", "text-rose-400");
+  });
 </script>
-
-</body>
-</html>

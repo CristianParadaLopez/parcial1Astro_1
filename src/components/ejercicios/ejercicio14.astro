@@ -1,38 +1,49 @@
 ---
-//Detector de Enter
+// components/ejercicios/DetectorEnter.astro
+import LayoutEjercicio from '../../layouts/LayoutEjercicio.astro';
 ---
-<title>Ejercicio 14</title>
-<div class="container">
-  <input type="text" id="userInput" placeholder="Escribe y presiona Enter" />
-  <p id="output"></p>
-</div>
+
+<LayoutEjercicio title="14. Detector de Enter">
+  <div class="max-w-md mx-auto bg-slate-900 p-8 rounded-2xl shadow-2xl border border-slate-800 text-center">
+    <h2 class="text-xl font-bold text-white mb-6 tracking-tight">Envío de Mensajes</h2>
+    
+    <div class="space-y-4">
+      <div class="relative">
+        <input 
+          type="text" 
+          id="userInput" 
+          placeholder="Escribe y presiona Enter..." 
+          class="w-full px-4 py-3 rounded-xl bg-slate-800 border border-slate-700 text-white placeholder:text-slate-500 focus:outline-none focus:border-cyan-400 focus:ring-1 focus:ring-cyan-400 transition-all"/>
+      </div>
+      
+      <div class="min-h-[60px] flex items-center justify-center bg-slate-950 rounded-xl border border-slate-800 p-4">
+        <p id="output" class="text-slate-400 font-medium italic">
+          Esperando entrada...
+        </p>
+      </div>
+    </div>
+    
+  </div>
+</LayoutEjercicio>
 
 <script>
+  // Casting de tipos siguiendo tu estilo original
   const input = document.getElementById('userInput') as HTMLInputElement;
   const output = document.getElementById('output');
 
-  input.addEventListener('keydown', (event) => {
+  input?.addEventListener('keydown', (event) => {
     if (event.key === 'Enter') {
       const value = input.value.trim();
+      
       if (value !== "" && output) {
-        output.textContent = value;
+        // Aplicamos el estilo del modelo de ejemplo: text-cyan-400 font-bold
+        output.innerHTML = `Mensaje enviado: <span class="text-cyan-400 font-bold animate-in fade-in slide-in-from-bottom-2 duration-300 block sm:inline">${value}</span>`;
         input.value = "";
+        
+        // Efecto flash rápido en el borde para feedback táctil
+        input.classList.add('ring-2', 'ring-cyan-400');
+        setTimeout(() => input.classList.remove('ring-2', 'ring-cyan-400'), 150);
       }
     }
   });
 </script>
-
-<style>
-  .container {
-    font-family: sans-serif;
-    padding: 20px;
-  }
-  input {
-    padding: 8px;
-    display: block;
-    margin-bottom: 10px;
-  }
-  p {
-    min-height: 1.5em;
-  }
-</style>

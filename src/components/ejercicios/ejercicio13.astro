@@ -1,35 +1,38 @@
 ---
-//Tecla presionada
+// components/ejercicios/TeclaPresionada.astro
+import LayoutEjercicio from '../../layouts/LayoutEjercicio.astro';
 ---
-<title>Ejercicio 13</title>
-<div class="container">
-  <input type="text" id="keyInput" placeholder="Escribe algo" />
-  <p id="mensaje">Ultima tecla presionada: </p>
-</div>
+
+<LayoutEjercicio title="13. Detector de Teclado">
+  <div class="max-w-md mx-auto bg-slate-900 p-8 rounded-2xl shadow-2xl border border-slate-800 text-center">
+    <h2 class="text-xl font-bold text-white mb-6 tracking-tight text-center">Monitor de Eventos</h2>
+    
+    <div class="space-y-6">
+      <input 
+        type="text" 
+        id="keyInput" 
+        placeholder="Escribe algo aquí..." 
+        class="w-full px-4 py-3 rounded-xl bg-slate-800 border border-slate-700 text-white placeholder:text-slate-500 focus:outline-none focus:border-cyan-400 focus:ring-1 focus:ring-cyan-400 transition-all text-center"
+      />
+      
+      <div class="py-4 bg-slate-950 rounded-lg border border-slate-800">
+        <p id="mensaje" class="text-slate-400 font-medium">
+          Última tecla presionada: <span class="text-cyan-400 font-bold">—</span>
+        </p>
+      </div>
+    </div>
+  </div>
+</LayoutEjercicio>
 
 <script>
-  const input = document.getElementById('keyInput');
+  const input = document.getElementById('keyInput') as HTMLInputElement | null;
   const mensaje = document.getElementById('mensaje');
 
   input?.addEventListener('keydown', (event) => {
     if (mensaje) {
-      mensaje.textContent = 'Ultima tecla presionada: ' + event.key;
+      const keyName = event.key === ' ' ? 'Espacio' : event.key;
+      
+      mensaje.innerHTML = `Última tecla presionada: <span class="text-cyan-400 font-bold text-xl animate-in fade-in zoom-in duration-150 inline-block">${keyName}</span>`;
     }
   });
 </script>
-
-<style>
-  .container {
-    font-family: sans-serif;
-    padding: 20px;
-  }
-  input {
-    padding: 8px;
-    font-size: 1rem;
-  }
-  p {
-    margin-top: 10px;
-    font-weight: bold;
-  }
-</style>
-

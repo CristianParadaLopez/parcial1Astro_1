@@ -1,31 +1,24 @@
----
-//Texto INteractivo
----
 <title>Ejercicio 16</title>
-<div class="container">
-  <p id="interactiveText">El evil hola mundo be like: adios mundo</p>
+
+<script src="https://cdn.tailwindcss.com"></script>
+
+<div class="p-5 font-sans">
+  <p 
+    id="interactiveText" 
+    class="text-xl cursor-default transition-colors duration-300 text-white"
+  >
+    Texto rojo!
+  </p>
 </div>
 
 <script>
   const text = document.getElementById('interactiveText');
 
   text?.addEventListener('mouseenter', () => {
-    text.style.color = 'red';
+    text.classList.replace('text-white', 'text-red-600');
   });
 
   text?.addEventListener('mouseleave', () => {
-    text.style.color = 'Black';
+    text.classList.replace('text-red-600', 'text-white');
   });
 </script>
-
-<style>
-  .container {
-    font-family: sans-serif;
-    padding: 20px;
-  }
-  p {
-    font-size: 1.2rem;
-    cursor: default;
-    transition: color 0.3s ease;
-  }
-</style>
