@@ -9,6 +9,8 @@ export default defineConfig({
     mode: 'standalone',
   }),
   markdown: {
-    syntaxHighlight: 'prism', // Cambiar shiki por prism evita ese error específico
+    shikiConfig: {
+      langs: ['astro', 'javascript', 'typescript', 'html', 'css'],
+    },
   },
 });
