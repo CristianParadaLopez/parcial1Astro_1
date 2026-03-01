@@ -1,0 +1,55 @@
+---
+// components/ejercicios/ejercicio18.astro
+import LayoutEjercicio from '../../layouts/LayoutEjercicio.astro';
+---
+
+<LayoutEjercicio title="Detector de Doble Clic">
+  <div class="flex flex-col items-start gap-4">
+    <button 
+      id="btnDoble" 
+      class="bg-purple-600 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded transition-all active:scale-95"
+    >
+      Haz doble clic aquí
+    </button>
+
+    <p id="mensajeClic" class="text-lg font-medium h-6 text-transparent transition-colors">
+      ¡Doble clic detectado!
+    </p>
+  </div>
+</LayoutEjercicio>
+
+<script>
+  function setupEjercicio18() {
+    const boton = document.getElementById('btnDoble') as HTMLButtonElement;
+    const mensaje = document.getElementById('mensajeClic');
+
+    if (!boton || !mensaje) return;
+
+    // FORZAMOS el estado inicial por si acaso
+    mensaje.classList.add('text-transparent');
+    mensaje.classList.remove('text-green-500');
+
+    // Usamos una función nombrada para evitar duplicar listeners
+    const handleDblClick = () => {
+      mensaje.classList.remove('text-transparent');
+      mensaje.classList.add('text-green-500');
+
+      setTimeout(() => {
+        // Usamos una validación por si el usuario cambió de ejercicio antes de los 2 seg
+        if (mensaje) {
+          mensaje.classList.replace('text-green-500', 'text-transparent');
+        }
+      }, 2000);
+    };
+
+    // Limpiamos cualquier listener previo y añadimos el nuevo
+    boton.removeEventListener('dblclick', handleDblClick);
+    boton.addEventListener('dblclick', handleDblClick);
+  }
+
+  // Se ejecuta al cargar la página por primera vez
+  setupEjercicio18();
+
+  // Se ejecuta cada vez que Astro cambia de página (navegación SPA)
+  document.addEventListener('astro:page-load', setupEjercicio18);
+</script>

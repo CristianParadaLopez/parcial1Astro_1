@@ -1,49 +1,47 @@
 ---
+// components/ejercicios/ejercicio1.astro
 import LayoutEjercicio from '../../layouts/LayoutEjercicio.astro';
 ---
 
-<LayoutEjercicio title="Formulario con Validación">
-  <div class="max-w-md mx-auto bg-slate-900 p-8 rounded-2xl shadow-2xl border border-slate-800 text-center">
-    <h2 class="text-xl font-bold text-white mb-6 tracking-tight">Registro de Usuario</h2>
-    
-    <div class="space-y-4">
-      <input 
-        type="text" 
-        id="nameInput" 
-        placeholder="Escribe tu nombre..." 
-        class="w-full px-4 py-2 rounded-lg bg-slate-800 border border-slate-700 text-white placeholder:text-slate-500 focus:outline-none focus:border-cyan-400 transition-colors"
-      />
-      
-      <input 
-        type="text" 
-        id="emailInput" 
-        placeholder="Escribe tu email..." 
-        class="w-full px-4 py-2 rounded-lg bg-slate-800 border border-slate-700 text-white placeholder:text-slate-500 focus:outline-none focus:border-cyan-400 transition-colors"
-      />
-
-      <div class="mt-6 p-4 bg-slate-950 rounded-xl border border-slate-800">
-        <p id="welcomeMessage" class="text-slate-300 text-lg">
-          Hola, invitado
-        </p>
-      </div>
-    </div>
-  </div>
+<LayoutEjercicio title="Formulario con validación">
+  <form id="myForm" class="flex flex-col gap-4 max-w-sm">
+    <input type="text" id="username" placeholder="Nombre de usuario..." class="border p-2 rounded" />
+    <input type="email" id="email" placeholder="Correo electrónico..." class="border p-2 rounded" />
+    <button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white p-2 rounded transition-colors">
+      Enviar
+    </button>
+  </form>
+  
+  <p id="message" class="mt-4 font-medium"></p>
 </LayoutEjercicio>
 
 <script>
-  const nameInput = document.getElementById('nameInput') as HTMLInputElement | null;
-  const message = document.getElementById('welcomeMessage');
+  const form = document.getElementById('myForm') as HTMLFormElement;
+  const usernameInput = document.getElementById('username') as HTMLInputElement;
+  const emailInput = document.getElementById('email') as HTMLInputElement;
+  const message = document.getElementById('message');
 
-  if (nameInput && message) {
-    nameInput.addEventListener('input', (e) => {
-      const target = e.target as HTMLInputElement;
-      const name = target.value.trim();
-      
-      if (name) {
-        message.innerHTML = `Hola, <span class="text-cyan-400 font-bold">${name}</span>`;
-      } else {
-        message.textContent = 'Hola, invitado';
+  form?.addEventListener('submit', (e) => {
+    e.preventDefault();
+
+    // Validamos si algún campo está vacío
+    if (!usernameInput.value.trim() || !emailInput.value.trim()) {
+      if (message) {
+        message.textContent = '❌ Por favor, completa todos los campos.';
+        message.classList.remove('text-green-600');
+        message.classList.add('text-red-600');
       }
-    });
-  }
+      return;
+    }
+
+    // Si todo está bien, mostramos éxito
+    if (message) {
+      message.textContent = `✅ ¡Gracias por registrarte, ${usernameInput.value}!`;
+      message.classList.remove('text-red-600');
+      message.classList.add('text-green-600');
+    }
+
+    // Reseteamos el formulario
+    form.reset();
+  });
 </script>

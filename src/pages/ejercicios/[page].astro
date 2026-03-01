@@ -1,4 +1,5 @@
 ---
+export const prerender = true;
 import LayoutProyecto from '../../layouts/LayoutProyecto.astro';
 
 // Importaciones dinámicas
@@ -19,9 +20,12 @@ import Ejercicio14 from '../../components/ejercicios/ejercicio14.astro';
 import Ejercicio15 from '../../components/ejercicios/ejercicio15.astro';
 import Ejercicio16 from '../../components/ejercicios/ejercicio16.astro';
 import Ejercicio17 from '../../components/ejercicios/ejercicio17.astro';
+import Ejercicio18 from '../../components/ejercicios/ejercicio18.astro';
+import Ejercicio19 from '../../components/ejercicios/ejercicio19.astro';
+import Ejercicio20 from '../../components/ejercicios/ejercicio20.astro';
 
 export async function getStaticPaths() {
-    const totalEjercicios = 17; 
+    const totalEjercicios = 20; 
     return Array.from({ length: totalEjercicios }, (_, i) => ({
         params: { page: (i + 1).toString() },
     }));
@@ -34,7 +38,7 @@ const ejercicios = [
     Ejercicio1, Ejercicio2, Ejercicio3, Ejercicio4, Ejercicio5,
     Ejercicio6, Ejercicio7, Ejercicio8, Ejercicio9, Ejercicio10,
     Ejercicio11, Ejercicio12, Ejercicio13, Ejercicio14, Ejercicio15,
-    Ejercicio16, Ejercicio17
+    Ejercicio16, Ejercicio17, Ejercicio18, Ejercicio19, Ejercicio20
 ];
 
 const CurrentEjercicio = ejercicios[currentPage - 1];

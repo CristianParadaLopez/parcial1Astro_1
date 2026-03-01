@@ -1,0 +1,47 @@
+---
+// components/ejercicios/ejercicio19.astro
+import LayoutEjercicio from '../../layouts/LayoutEjercicio.astro';
+---
+
+<LayoutEjercicio title="Estado del Campo (Focus/Blur)">
+  <div class="flex flex-col gap-3 max-w-xs">
+    <label for="campoInteractible" class="text-sm font-semibold text-gray-700">
+      Interactúa con este campo:
+    </label>
+    
+    <input 
+      type="text" 
+      id="campoInteractible" 
+      placeholder="Haz clic aquí..." 
+      class="border-2 border-gray-300 p-2 rounded focus:border-blue-500 focus:outline-none transition-colors"
+    />
+
+    <p id="estadoCapa" class="text-sm italic text-gray-500">
+      Campo inactivo
+    </p>
+  </div>
+</LayoutEjercicio>
+
+<script>
+  // 1. Seleccionamos los elementos
+  const input = document.getElementById('campoInteractible') as HTMLInputElement;
+  const estado = document.getElementById('estadoCapa');
+
+  // 2. Evento FOCUS: Cuando el usuario entra al campo
+  input?.addEventListener('focus', () => {
+    if (estado) {
+      estado.textContent = "🟢 El campo está activo";
+      estado.classList.remove('text-gray-500');
+      estado.classList.add('text-green-600', 'font-bold');
+    }
+  });
+
+  // 3. Evento BLUR: Cuando el usuario sale del campo
+  input?.addEventListener('blur', () => {
+    if (estado) {
+      estado.textContent = "⚪ Campo inactivo";
+      estado.classList.remove('text-green-600', 'font-bold');
+      estado.classList.add('text-gray-500');
+    }
+  });
+</script>
