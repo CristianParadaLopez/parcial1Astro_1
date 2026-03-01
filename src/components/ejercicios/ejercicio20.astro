@@ -1,0 +1,40 @@
+---
+// components/ejercicios/ejercicio20.astro
+import LayoutEjercicio from '../../layouts/LayoutEjercicio.astro';
+---
+
+<LayoutEjercicio title="Réplica en Tiempo Real">
+  <div class="flex flex-col gap-4 max-w-md">
+    <label for="replicador" class="text-sm font-medium text-slate-600">
+      Escribe algo aquí abajo:
+    </label>
+    
+    <input 
+      type="text" 
+      id="replicador" 
+      placeholder="Escribe tu mensaje..." 
+      class="border-2 border-slate-200 p-3 rounded-lg focus:border-cyan-500 outline-none transition-all shadow-sm"
+    />
+
+    <div class="p-4rounded-lg border border-dashed border-slate-300">
+      <p class="text-xs uppercase tracking-widest  mb-1">Vista previa:</p>
+      <p id="espejo" class="text-xl font-semibold text-cyan-600 break-words min-h-[1.5rem]">
+        ...
+      </p>
+    </div>
+  </div>
+</LayoutEjercicio>
+
+<script>
+  // 1. Seleccionamos los elementos del DOM
+  const inputOriginal = document.getElementById('replicador') as HTMLInputElement;
+  const parrafoEspejo = document.getElementById('espejo');
+
+  // 2. Escuchamos el evento 'input'
+  inputOriginal?.addEventListener('input', () => {
+    if (parrafoEspejo) {
+      // Si el input está vacío, ponemos los puntos suspensivos, si no, el valor
+      parrafoEspejo.textContent = inputOriginal.value || "...";
+    }
+  });
+</script>
