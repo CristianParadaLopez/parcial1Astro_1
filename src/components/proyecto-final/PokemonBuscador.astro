@@ -1,6 +1,5 @@
 ---
 import '../../styles/global.css';
-
 ---
 
 <div class="my-6 w-full max-w-md mx-auto">
@@ -18,32 +17,91 @@ import '../../styles/global.css';
       id="pokemon-search" 
       class="block w-full p-4 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all" 
       placeholder="Escribe el nombre de un Pokémon..." 
-      required
     />
+  </div>
+
+  <!-- Overlay de resultados -->
+  <div 
+    id="search-results" 
+    class="hidden absolute z-50 w-full max-w-md bg-white border border-gray-200 rounded-lg shadow-lg mt-1 max-h-80 overflow-y-auto"
+  >
   </div>
 </div>
 
 <script>
-  // Lógica de interactividad con JS Vanilla
   const searchInput = document.getElementById('pokemon-search') as HTMLInputElement;
+  const resultsBox = document.getElementById('search-results') as HTMLDivElement;
+
+  // Cargamos la lista completa UNA sola vez (son solo nombres, muy liviano)
+  let allPokemons: { name: string; id: string }[] = [];
+
+  async function loadAllPokemons() {
+    try {
+      // limit=10000 trae todos los pokémon disponibles de una vez
+      const res = await fetch('https://pokeapi.co/api/v2/pokemon?limit=10000');
+      const data = await res.json();
+      allPokemons = data.results.map((p: any) => {
+        const id = p.url.split('/').filter(Boolean).pop();
+        return { name: p.name, id };
+      });
+    } catch (e) {
+      console.error('Error cargando pokémons', e);
+    }
+  }
+
+  function renderResults(matches: { name: string; id: string }[]) {
+    if (matches.length === 0) {
+      resultsBox.innerHTML = `<p class="p-4 text-sm text-gray-500">No se encontró ningún Pokémon.</p>`;
+      resultsBox.classList.remove('hidden');
+      return;
+    }
+
+    // Mostramos máximo 10 sugerencias
+    const html = matches.slice(0, 10).map(p => `
+      <a 
+        href="/proyecto-final/pokemon/${p.name}" 
+        class="flex items-center gap-3 px-4 py-2 hover:bg-gray-100 transition-colors"
+      >
+        <img 
+          src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${p.id}.png" 
+          alt="${p.name}" 
+          class="w-8 h-8"
+          loading="lazy"
+        />
+        <span class="capitalize text-sm text-gray-800">${p.name}</span>
+      </a>
+    `).join('');
+
+    resultsBox.innerHTML = html;
+    resultsBox.classList.remove('hidden');
+  }
+
+  // Debounce para no disparar en cada tecla
+  let debounceTimer: ReturnType<typeof setTimeout>;
 
   searchInput?.addEventListener('input', (e) => {
-    const searchTerm = (e.target as HTMLInputElement).value.toLowerCase();
-    
-    // Buscamos todas las "cards" de Pokémon que están en el DOM
-    // Nota: Asegúrate de que tus componentes PokemonCard tengan la clase 'pokemon-card'
-    const cards = document.querySelectorAll('.pokemon-card');
+    const term = (e.target as HTMLInputElement).value.toLowerCase().trim();
 
-    cards.forEach((card) => {
-      // Obtenemos el nombre del Pokémon guardado en un atributo data o del texto
-      const pokemonName = card.getAttribute('data-name')?.toLowerCase() || "";
-      
-      // Renderizado condicional mediante manipulación del DOM
-      if (pokemonName.includes(searchTerm)) {
-        (card as HTMLElement).style.display = 'block';
-      } else {
-        (card as HTMLElement).style.display = 'none';
-      }
-    });
+    clearTimeout(debounceTimer);
+
+    if (term.length < 2) {
+      resultsBox.classList.add('hidden');
+      return;
+    }
+
+    debounceTimer = setTimeout(() => {
+      const matches = allPokemons.filter(p => p.name.includes(term));
+      renderResults(matches);
+    }, 300);
   });
+
+  // Cerrar al hacer click fuera
+  document.addEventListener('click', (e) => {
+    if (!searchInput.contains(e.target as Node) && !resultsBox.contains(e.target as Node)) {
+      resultsBox.classList.add('hidden');
+    }
+  });
+
+  // Iniciamos la carga al montar el componente
+  loadAllPokemons();
 </script>
